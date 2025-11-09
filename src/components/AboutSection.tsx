@@ -30,13 +30,13 @@ const AboutSection = () => {
             </div>
 
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              Preferred Square provides offshore management consulting, investment advisory and 
+              Quantix Strategies provides offshore management consulting, investment advisory and 
               business analytics support to family offices, fund managers, advisors and corporates 
               across the globe.
             </p>
 
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              Through our long history of consulting projects with Family Offices and LPs, we've 
+              Through our long history of consulting projects with Family Offices and LPs, we&apos;ve 
               developed a unique vantage to enable our clients in critical areas of business ranging 
               from business strategy to portfolio management to transaction advisory.
             </p>

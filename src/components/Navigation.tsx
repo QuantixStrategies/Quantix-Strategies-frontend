@@ -23,8 +23,8 @@ const Navigation = () => {
               <div className="w-6 h-6 border-2 border-primary-foreground transform rotate-45"></div>
             </div>
             <div className="flex flex-col leading-tight">
-              <span className="font-bold text-lg text-foreground">PREFERRED</span>
-              <span className="font-bold text-lg text-foreground">SQUARE</span>
+              <span className="font-bold text-lg text-foreground">QUANTIX</span>
+              <span className="font-bold text-lg text-foreground">STRATEGIES</span>
             </div>
           </div>
 

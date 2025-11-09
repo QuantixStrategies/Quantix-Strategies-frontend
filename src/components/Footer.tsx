@@ -10,8 +10,8 @@ const Footer = () => {
                 <div className="w-5 h-5 border-2 border-primary transform rotate-45"></div>
               </div>
               <div className="flex flex-col leading-tight">
-                <span className="font-bold text-sm">PREFERRED</span>
-                <span className="font-bold text-sm">SQUARE</span>
+                <span className="font-bold text-sm">QUANTIX</span>
+                <span className="font-bold text-sm">STRATEGIES</span>
               </div>
             </div>
             <p className="text-sm text-primary-foreground/80">
@@ -55,7 +55,7 @@ const Footer = () => {
           <div>
             <h4 className="font-bold mb-4">Contact</h4>
             <ul className="space-y-2">
-              <li className="text-sm text-primary-foreground/80">info@preferredsquare.com</li>
+              <li className="text-sm text-primary-foreground/80">info@quantixstrategies.com</li>
               <li className="text-sm text-primary-foreground/80">+1 (555) 123-4567</li>
             </ul>
           </div>
@@ -63,7 +63,7 @@ const Footer = () => {
 
         <div className="border-t border-primary-foreground/20 pt-8">
           <p className="text-sm text-primary-foreground/60 text-center">
-            © {new Date().getFullYear()} Preferred Square. All rights reserved.
+            © {new Date().getFullYear()} Quantix Strategies. All rights reserved.
           </p>
         </div>
       </div>
