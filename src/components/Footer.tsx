@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <img src={quantixLogo} alt="Quantix Strategies" className="h-10 mb-4 brightness-0 invert" />
+            <img src={quantixLogo} alt="Quantix Strategies" className="h-12 mb-4 brightness-[10] dark:brightness-0 dark:invert" />
             <p className="text-sm text-primary-foreground/80">
               Strategic management consulting powered by data-driven insights
             </p>
