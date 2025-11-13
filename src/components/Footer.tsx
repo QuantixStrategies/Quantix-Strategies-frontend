@@ -1,3 +1,5 @@
+import quantixLogo from "@/assets/quantix-logo.png";
+
 const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground py-12">
@@ -5,15 +7,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary-foreground flex items-center justify-center">
-                <div className="w-5 h-5 border-2 border-primary transform rotate-45"></div>
-              </div>
-              <div className="flex flex-col leading-tight">
-                <span className="font-bold text-sm">QUANTIX</span>
-                <span className="font-bold text-sm">STRATEGIES</span>
-              </div>
-            </div>
+            <img src={quantixLogo} alt="Quantix Strategies" className="h-10 mb-4 brightness-0 invert" />
             <p className="text-sm text-primary-foreground/80">
               Strategic management consulting powered by data-driven insights
             </p>
