@@ -21,7 +21,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link to="/">
-            <img src={quantixLogo} alt="Quantix Strategies" className="h-12" />
+            <img src={quantixLogo} alt="Quantix Strategies" className="h-14 lg:h-16" />
           </Link>
 
           {/* Desktop Navigation */}
