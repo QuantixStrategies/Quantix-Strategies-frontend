@@ -45,7 +45,7 @@ const Navigation = () => {
                 </a>
               )
             ))}
-            <Button variant="default" className="bg-accent hover:bg-accent/90">
+            <Button variant="default" size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
               Contact Us
             </Button>
           </div>
@@ -84,7 +84,7 @@ const Navigation = () => {
                   </a>
                 )
               ))}
-              <Button variant="default" className="bg-accent hover:bg-accent/90 w-full">
+              <Button variant="default" size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground w-full">
                 Contact Us
               </Button>
             </div>

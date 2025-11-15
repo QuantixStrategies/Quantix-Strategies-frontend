@@ -24,7 +24,7 @@ All colors MUST be HSL.
     --secondary-foreground: 0 0% 100%;
 
     --muted: 210 20% 96%;
-    --muted-foreground: 201 20% 45%;
+    --muted-foreground: 201 30% 40%;
 
     --accent: 164 50% 59%;
     --accent-foreground: 0 0% 100%;
@@ -53,21 +53,32 @@ All colors MUST be HSL.
     /* Shadows */
     --shadow-soft: 0 4px 20px rgba(19, 60, 85, 0.1);
     --shadow-medium: 0 8px 30px rgba(19, 60, 85, 0.15);
+    
+    /* Typography Scale */
+    --font-h1: 3.5rem; /* 56px */
+    --font-h2: 2.5rem; /* 40px */
+    --font-h3: 2rem;   /* 32px */
+    --font-h4: 1.5rem; /* 24px */
+    --font-body-lg: 1.125rem; /* 18px */
+    --font-body: 1rem; /* 16px */
+    
+    /* Line Heights */
+    --leading-tight: 1.2;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.6;
+    
+    /* Spacing Scale */
+    --spacing-section-sm: 3rem;  /* 48px */
+    --spacing-section-md: 5rem;  /* 80px */
+    --spacing-section-lg: 7rem;  /* 112px */
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -88,7 +99,7 @@ All colors MUST be HSL.
     --secondary-foreground: 0 0% 98%;
 
     --muted: 201 40% 20%;
-    --muted-foreground: 201 20% 70%;
+    --muted-foreground: 201 20% 65%;
 
     --accent: 164 50% 59%;
     --accent-foreground: 0 0% 98%;
@@ -99,6 +110,7 @@ All colors MUST be HSL.
     --border: 201 40% 20%;
     --input: 201 40% 20%;
     --ring: 197 87% 75%;
+    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -117,5 +129,29 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  h1 {
+    @apply text-5xl lg:text-6xl font-bold;
+    line-height: var(--leading-tight);
+  }
+  
+  h2 {
+    @apply text-3xl lg:text-4xl font-bold;
+    line-height: var(--leading-tight);
+  }
+  
+  h3 {
+    @apply text-2xl lg:text-3xl font-semibold;
+    line-height: var(--leading-normal);
+  }
+  
+  h4 {
+    @apply text-xl font-semibold;
+    line-height: var(--leading-normal);
+  }
+  
+  p {
+    line-height: var(--leading-relaxed);
   }
 }
