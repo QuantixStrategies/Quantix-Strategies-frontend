@@ -49,13 +49,13 @@ export default function Assessment() {
 
   if (result) {
     return (
-      <>
+      <div className="animate-fade-in">
         <Navigation />
         <main className="min-h-screen bg-background pt-20">
           <AssessmentResults result={result} onRestart={resetAssessment} />
         </main>
         <Footer />
-      </>
+      </div>
     );
   }
 
@@ -67,7 +67,7 @@ export default function Assessment() {
     const currentTrack = comprehensiveStep || selectedTrack;
 
     return (
-      <>
+      <div className="animate-fade-in">
         <Navigation />
         <main className="min-h-screen bg-background pt-20">
           {comprehensiveStep && (
@@ -84,12 +84,12 @@ export default function Assessment() {
           />
         </main>
         <Footer />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="animate-fade-in">
       <Navigation />
       <main className="min-h-screen bg-background pt-20">
         <div className="container mx-auto py-16 px-4">
@@ -191,6 +191,6 @@ export default function Assessment() {
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

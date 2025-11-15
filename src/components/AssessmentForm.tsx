@@ -13,36 +13,25 @@ interface AssessmentFormProps {
 
 export function AssessmentForm({ questions, track, onComplete }: AssessmentFormProps) {
   const [responses, setResponses] = useState<AssessmentResponses>({});
-  const [currentStep, setCurrentStep] = useState(0);
 
   const handleResponse = (questionId: string, value: number) => {
     setResponses(prev => ({ ...prev, [questionId]: value }));
   };
 
-  const handleNext = () => {
-    if (currentStep < questions.length - 1) {
-      setCurrentStep(prev => prev + 1);
-    } else {
-      onComplete(responses);
-    }
+  const handleSubmit = () => {
+    onComplete(responses);
   };
 
-  const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
-    }
-  };
-
-  const currentQuestion = questions[currentStep];
-  const isAnswered = responses[currentQuestion.id] !== undefined;
-  const progress = ((currentStep + 1) / questions.length) * 100;
+  const answeredCount = Object.keys(responses).length;
+  const progress = (answeredCount / questions.length) * 100;
+  const allAnswered = answeredCount === questions.length;
 
   return (
-    <div className="w-full max-w-3xl mx-auto py-8 px-4">
+    <div className="w-full max-w-4xl mx-auto py-8 px-4 animate-fade-in">
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
           <span className="text-sm text-muted-foreground">
-            Question {currentStep + 1} of {questions.length}
+            {answeredCount} of {questions.length} questions answered
           </span>
           <span className="text-sm font-medium text-primary">
             {Math.round(progress)}% Complete
@@ -50,88 +39,93 @@ export function AssessmentForm({ questions, track, onComplete }: AssessmentFormP
         </div>
         <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-blue-medium to-teal transition-all duration-300"
+            className="h-full bg-gradient-to-r from-blue-medium to-teal transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
-      <Card className="border-2">
-        <CardHeader>
-          <CardTitle className="text-xl">
-            {currentQuestion.question}
-          </CardTitle>
-          {currentQuestion.type === 'scaled' && currentQuestion.labels && (
-            <CardDescription>
-              {currentQuestion.labels.min} → {currentQuestion.labels.max}
-            </CardDescription>
-          )}
-        </CardHeader>
-        <CardContent>
-          {currentQuestion.type === 'scaled' ? (
-            <RadioGroup
-              value={responses[currentQuestion.id]?.toString()}
-              onValueChange={(value) => handleResponse(currentQuestion.id, parseInt(value))}
-              className="space-y-4"
-            >
-              {currentQuestion.scale.map((value) => (
-                <div key={value} className="flex items-center space-x-3 p-4 rounded-lg border hover:bg-accent transition-colors">
-                  <RadioGroupItem value={value.toString()} id={`${currentQuestion.id}-${value}`} />
-                  <Label 
-                    htmlFor={`${currentQuestion.id}-${value}`}
-                    className="flex-1 cursor-pointer font-medium"
-                  >
-                    {value}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
-          ) : (
-            <RadioGroup
-              value={responses[currentQuestion.id]?.toString()}
-              onValueChange={(value) => handleResponse(currentQuestion.id, parseInt(value))}
-              className="space-y-4"
-            >
-              <div className="flex items-center space-x-3 p-4 rounded-lg border hover:bg-accent transition-colors">
-                <RadioGroupItem value="1" id={`${currentQuestion.id}-yes`} />
-                <Label 
-                  htmlFor={`${currentQuestion.id}-yes`}
-                  className="flex-1 cursor-pointer font-medium"
-                >
-                  Yes
-                </Label>
+      <div className="space-y-6">
+        {questions.map((question, index) => (
+          <Card key={question.id} className="border-2 transition-all duration-300 hover:shadow-lg">
+            <CardHeader>
+              <div className="flex items-start justify-between">
+                <CardTitle className="text-lg flex-1">
+                  <span className="text-primary mr-2">{index + 1}.</span>
+                  {question.question}
+                </CardTitle>
+                {responses[question.id] !== undefined && (
+                  <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                    ✓ Answered
+                  </span>
+                )}
               </div>
-              <div className="flex items-center space-x-3 p-4 rounded-lg border hover:bg-accent transition-colors">
-                <RadioGroupItem value="0" id={`${currentQuestion.id}-no`} />
-                <Label 
-                  htmlFor={`${currentQuestion.id}-no`}
-                  className="flex-1 cursor-pointer font-medium"
+              {question.type === 'scaled' && question.labels && (
+                <CardDescription>
+                  {question.labels.min} → {question.labels.max}
+                </CardDescription>
+              )}
+            </CardHeader>
+            <CardContent>
+              {question.type === 'scaled' ? (
+                <RadioGroup
+                  value={responses[question.id]?.toString()}
+                  onValueChange={(value) => handleResponse(question.id, parseInt(value))}
+                  className="space-y-3"
                 >
-                  No
-                </Label>
-              </div>
-            </RadioGroup>
-          )}
+                  {question.scale.map((value) => (
+                    <div key={value} className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
+                      <RadioGroupItem value={value.toString()} id={`${question.id}-${value}`} />
+                      <Label 
+                        htmlFor={`${question.id}-${value}`}
+                        className="flex-1 cursor-pointer font-medium"
+                      >
+                        {value}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              ) : (
+                <RadioGroup
+                  value={responses[question.id]?.toString()}
+                  onValueChange={(value) => handleResponse(question.id, parseInt(value))}
+                  className="space-y-3"
+                >
+                  <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
+                    <RadioGroupItem value="1" id={`${question.id}-yes`} />
+                    <Label 
+                      htmlFor={`${question.id}-yes`}
+                      className="flex-1 cursor-pointer font-medium"
+                    >
+                      Yes
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors">
+                    <RadioGroupItem value="0" id={`${question.id}-no`} />
+                    <Label 
+                      htmlFor={`${question.id}-no`}
+                      className="flex-1 cursor-pointer font-medium"
+                    >
+                      No
+                    </Label>
+                  </div>
+                </RadioGroup>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
-          <div className="flex justify-between mt-8 gap-4">
-            <Button
-              variant="outline"
-              onClick={handleBack}
-              disabled={currentStep === 0}
-              className="w-32"
-            >
-              Back
-            </Button>
-            <Button
-              onClick={handleNext}
-              disabled={!isAnswered}
-              className="w-32"
-            >
-              {currentStep === questions.length - 1 ? 'Finish' : 'Next'}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="mt-8 flex justify-end">
+        <Button
+          onClick={handleSubmit}
+          disabled={!allAnswered}
+          size="lg"
+          className="w-full sm:w-auto"
+        >
+          Submit Assessment
+        </Button>
+      </div>
     </div>
   );
 }
