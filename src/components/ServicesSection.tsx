@@ -73,19 +73,18 @@ const services = [
 
 const ServicesSection = () => {
   return (
-    <section id="services" className="py-20 lg:py-32 bg-muted/30">
+    <section id="services" className="py-20 lg:py-24 bg-muted/30">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            Core Services Offered
+        <div className="text-center mb-12">
+          <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+            Comprehensive Consulting Services
           </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            We offer a broad range of services including financial solutions, strategy formulation, 
-            implementation and other services
+          <p className="text-base text-muted-foreground max-w-3xl mx-auto">
+            End-to-end strategic support across business operations, investment decisions, and portfolio optimization
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, index) => {
             const Icon = service.icon;
             const isCorporate = service.category === "Corporate";
@@ -93,32 +92,32 @@ const ServicesSection = () => {
             return (
               <div
                 key={index}
-                className="bg-background rounded-lg p-6 lg:p-8 shadow-sm hover:shadow-md transition-shadow border-l-4"
+                className="bg-background rounded-lg p-6 lg:p-8 hover:shadow-md transition-shadow border-l-4"
                 style={{
-                  borderLeftColor: isCorporate ? "hsl(var(--blue-medium))" : "hsl(var(--teal))",
+                  borderLeftColor: isCorporate ? "hsl(var(--secondary))" : "hsl(var(--accent))",
                 }}
               >
                 <div className="flex items-start gap-4 mb-4">
                   <div
-                    className="p-3 rounded-lg"
+                    className="p-3 rounded-lg flex-shrink-0"
                     style={{
                       backgroundColor: isCorporate
-                        ? "hsl(var(--blue-light) / 0.1)"
-                        : "hsl(var(--teal) / 0.1)",
+                        ? "hsl(var(--secondary) / 0.1)"
+                        : "hsl(var(--accent) / 0.1)",
                     }}
                   >
                     <Icon
                       className="w-6 h-6"
                       style={{
-                        color: isCorporate ? "hsl(var(--blue-medium))" : "hsl(var(--teal))",
+                        color: isCorporate ? "hsl(var(--secondary))" : "hsl(var(--accent))",
                       }}
                     />
                   </div>
-                  <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-1">
+                  <div className="flex-1">
+                    <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
                       {service.category}
                     </div>
-                    <h3 className="text-xl font-bold text-foreground">{service.title}</h3>
+                    <h3 className="text-xl font-semibold text-foreground">{service.title}</h3>
                   </div>
                 </div>
 

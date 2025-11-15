@@ -8,28 +8,27 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <img src={quantixLogo} alt="Quantix Strategies" className="h-12 mb-4 brightness-[10] dark:brightness-0 dark:invert" />
-            <p className="text-sm text-primary-foreground/80">
-              Strategic management consulting powered by data-driven insights
+            <p className="text-sm text-primary-foreground">
+              Offshore consulting for family offices and institutional investors worldwide
             </p>
           </div>
 
-          {/* Quick Links */}
           <div>
-            <h4 className="font-bold mb-4">Quick Links</h4>
+            <h4 className="font-semibold mb-4 text-primary-foreground">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#about" className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                <a href="#about" className="text-sm text-primary-foreground hover:text-accent transition-colors">
                   About Us
                 </a>
               </li>
               <li>
-                <a href="#services" className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                <a href="#services" className="text-sm text-primary-foreground hover:text-accent transition-colors">
                   Services
                 </a>
               </li>
               <li>
-                <a href="#clients" className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Who We Serve
+                <a href="/assessment" className="text-sm text-primary-foreground hover:text-accent transition-colors">
+                  Assessment
                 </a>
               </li>
             </ul>
@@ -37,26 +36,26 @@ const Footer = () => {
 
           {/* Services */}
           <div>
-            <h4 className="font-bold mb-4">Our Services</h4>
+            <h4 className="font-semibold mb-4 text-primary-foreground">Our Services</h4>
             <ul className="space-y-2">
-              <li className="text-sm text-primary-foreground/80">Business Strategy</li>
-              <li className="text-sm text-primary-foreground/80">Transaction Advisory</li>
-              <li className="text-sm text-primary-foreground/80">Portfolio Management</li>
+              <li className="text-sm text-primary-foreground">Business Strategy</li>
+              <li className="text-sm text-primary-foreground">Transaction Advisory</li>
+              <li className="text-sm text-primary-foreground">Portfolio Management</li>
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="font-bold mb-4">Contact</h4>
+            <h4 className="font-semibold mb-4 text-primary-foreground">Contact</h4>
             <ul className="space-y-2">
-              <li className="text-sm text-primary-foreground/80">info@quantixstrategies.com</li>
-              <li className="text-sm text-primary-foreground/80">+1 (555) 123-4567</li>
+              <li className="text-sm text-primary-foreground">info@quantixstrategies.com</li>
+              <li className="text-sm text-primary-foreground">Confidential inquiries welcome</li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-primary-foreground/20 pt-8">
-          <p className="text-sm text-primary-foreground/60 text-center">
+          <p className="text-sm text-primary-foreground text-center">
             © {new Date().getFullYear()} Quantix Strategies. All rights reserved.
           </p>
         </div>

@@ -16,19 +16,19 @@ const HeroSection = () => {
       {/* Content */}
       <div className="container mx-auto px-4 lg:px-8 py-32 lg:py-40 relative z-10">
         <div className="max-w-4xl">
-          <div className="flex gap-4 items-start mb-6">
+          <div className="flex gap-4 items-start mb-8">
             <div className="w-1 h-32 bg-accent flex-shrink-0"></div>
             <div>
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-primary-foreground mb-2">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary-foreground mb-2">
                 Every Decision
               </h1>
-              <h2 className="text-5xl md:text-6xl lg:text-8xl font-bold text-primary-foreground">
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary-foreground">
                 Better Informed
               </h2>
             </div>
           </div>
-          <p className="text-lg md:text-xl text-primary-foreground/90 max-w-2xl ml-5">
-            Strategic management consulting powered by data-driven insights and global expertise
+          <p className="text-lg text-primary-foreground max-w-2xl ml-5">
+            Offshore management consulting delivering actionable insights for family offices, fund managers, and institutional investors worldwide
           </p>
         </div>
       </div>
