@@ -116,15 +116,37 @@ export function AssessmentForm({ questions, track, onComplete }: AssessmentFormP
         ))}
       </div>
 
-      <div className="mt-8 flex justify-end">
-        <Button
-          onClick={handleSubmit}
-          disabled={!allAnswered}
-          size="lg"
-          className="w-full sm:w-auto"
-        >
-          Submit Assessment
-        </Button>
+      <div className="sticky bottom-0 left-0 right-0 mt-8 bg-background/95 backdrop-blur-sm border-t border-border shadow-lg">
+        <div className="max-w-4xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-3">
+                <div className="text-2xl font-bold text-primary">
+                  {Math.round(progress)}%
+                </div>
+                <div className="flex-1">
+                  <div className="text-sm text-muted-foreground mb-1">
+                    {answeredCount} of {questions.length} questions completed
+                  </div>
+                  <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-blue-medium to-teal transition-all duration-500"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Button
+              onClick={handleSubmit}
+              disabled={!allAnswered}
+              size="lg"
+              className="shrink-0"
+            >
+              Submit Assessment
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
