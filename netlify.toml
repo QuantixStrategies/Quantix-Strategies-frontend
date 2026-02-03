@@ -1,0 +1,16 @@
+# Netlify build and deploy configuration
+# https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# SPA: serve index.html for all routes (client-side routing)
+# _redirects in public/ is copied to dist/ by Vite
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

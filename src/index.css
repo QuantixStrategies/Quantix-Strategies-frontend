@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 201 63% 21%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 201 63% 21%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 201 63% 21%;
+
+    --primary: 201 63% 21%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 206 48% 44%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 201 30% 40%;
+
+    --accent: 164 50% 59%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 201 63% 21%;
+
+    --radius: 0.5rem;
+    
+    /* Custom brand colors */
+    --navy: 201 63% 21%;
+    --blue-medium: 206 48% 44%;
+    --blue-light: 201 64% 61%;
+    --blue-sky: 197 87% 75%;
+    --blue-pale: 191 85% 77%;
+    --teal: 164 50% 59%;
+    
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(201 63% 21%), hsl(206 48% 44%));
+    --gradient-accent: linear-gradient(135deg, hsl(197 87% 75%), hsl(164 50% 59%));
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px rgba(19, 60, 85, 0.1);
+    --shadow-medium: 0 8px 30px rgba(19, 60, 85, 0.15);
+    
+    /* Typography Scale */
+    --font-h1: 3.5rem; /* 56px */
+    --font-h2: 2.5rem; /* 40px */
+    --font-h3: 2rem;   /* 32px */
+    --font-h4: 1.5rem; /* 24px */
+    --font-body-lg: 1.125rem; /* 18px */
+    --font-body: 1rem; /* 16px */
+    
+    /* Line Heights */
+    --leading-tight: 1.2;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.6;
+    
+    /* Spacing Scale */
+    --spacing-section-sm: 3rem;  /* 48px */
+    --spacing-section-md: 5rem;  /* 80px */
+    --spacing-section-lg: 7rem;  /* 112px */
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 201 63% 10%;
+    --foreground: 0 0% 98%;
+
+    --card: 201 50% 15%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 201 50% 15%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 197 87% 75%;
+    --primary-foreground: 201 63% 21%;
+
+    --secondary: 206 48% 44%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 201 40% 20%;
+    --muted-foreground: 201 20% 65%;
+
+    --accent: 164 50% 59%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 201 40% 20%;
+    --input: 201 40% 20%;
+    --ring: 197 87% 75%;
+    
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  h1 {
+    @apply text-5xl lg:text-6xl font-bold;
+    line-height: var(--leading-tight);
+  }
+  
+  h2 {
+    @apply text-3xl lg:text-4xl font-bold;
+    line-height: var(--leading-tight);
+  }
+  
+  h3 {
+    @apply text-2xl lg:text-3xl font-semibold;
+    line-height: var(--leading-normal);
+  }
+  
+  h4 {
+    @apply text-xl font-semibold;
+    line-height: var(--leading-normal);
+  }
+  
+  p {
+    line-height: var(--leading-relaxed);
+  }
+}
