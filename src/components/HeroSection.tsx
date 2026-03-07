@@ -8,8 +8,8 @@ const HeroSection = () => {
         <img
           src={heroBackground}
           alt="Network visualization background"
-          className="w-full h-full object-cover"
-        />
+          className="w-full h-full object-cover" />
+        
         <div className="absolute inset-0 bg-primary/70"></div>
       </div>
 
@@ -20,15 +20,15 @@ const HeroSection = () => {
             <div className="w-1 h-32 bg-accent flex-shrink-0"></div>
             <div>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary-foreground mb-2">
-                Every Decision
+
               </h1>
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary-foreground">
-                Better Informed
+
               </h2>
             </div>
           </div>
           <p className="text-lg text-primary-foreground max-w-2xl ml-5">
-            Offshore management consulting delivering actionable insights for family offices, fund managers, and institutional investors worldwide
+
           </p>
         </div>
       </div>
@@ -39,8 +39,8 @@ const HeroSection = () => {
           <div className="w-1 h-3 bg-primary-foreground/50 rounded-full animate-bounce"></div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default HeroSection;
