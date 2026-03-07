@@ -1,9 +1,10 @@
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { useEffect, useState } from "react";
 import type { ISourceOptions } from "@tsparticles/engine";
 import { Mouse } from "lucide-react";
+import { motion } from "framer-motion";
 
 const HeroSection = () => {
   const [init, setInit] = useState(false);
