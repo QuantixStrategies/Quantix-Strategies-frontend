@@ -87,7 +87,12 @@ const HeroSection = () => {
       {/* Content */}
       <div className="container mx-auto px-4 lg:px-8 py-32 lg:py-40 relative z-10">
         <div className="max-w-4xl">
-          <div className="flex gap-5 items-start mb-8">
+          <motion.div
+            className="flex gap-5 items-start mb-8"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
             <div
               className="w-1.5 h-28 md:h-36 flex-shrink-0 rounded-full mt-1"
               style={{ background: "linear-gradient(to bottom, #2dd4bf, #22d3ee)" }}
@@ -106,12 +111,17 @@ const HeroSection = () => {
                 into Decision
               </h2>
             </div>
-          </div>
-          <p className="text-lg md:text-xl text-white/70 max-w-2xl ml-8 leading-relaxed">
+          </motion.div>
+          <motion.p
+            className="text-lg md:text-xl text-white/70 max-w-2xl ml-8 leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          >
             Trusted extended team to global advisory firms and emerging
             businesses, delivering tailored strategies and transformative
             solutions to drive long-term value
-          </p>
+          </motion.p>
         </div>
       </div>
 
