@@ -20,15 +20,15 @@ const HeroSection = () => {
             <div className="w-1 h-32 bg-accent flex-shrink-0"></div>
             <div>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary-foreground mb-2">
-
+                Turning Data{" "}
               </h1>
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary-foreground">
-
+                into Decision
               </h2>
             </div>
           </div>
           <p className="text-lg text-primary-foreground max-w-2xl ml-5">
-
+            Trusted extended team to global advisory firms and emerging businesses, delivering tailored strategies and transformative solutions to drive long-term value
           </p>
         </div>
       </div>
