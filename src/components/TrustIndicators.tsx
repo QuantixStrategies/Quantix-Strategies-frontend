@@ -1,29 +1,29 @@
-import { Shield, Award, Users, TrendingUp } from "lucide-react";
+import { Globe, Users, TrendingUp, Award } from "lucide-react";
 
 const metrics = [
+  {
+    icon: Globe,
+    value: "3+",
+    label: "Geographies Served",
+    description: "USA, UK, Europe, Middle-East, South-East Asia",
+  },
   {
     icon: Users,
     value: "145+",
     label: "Global Clients Served",
-    description: "Family offices and institutional investors",
+    description: "Conglomerates, family offices, and businesses",
   },
   {
     icon: TrendingUp,
-    value: "$2.5B+",
-    label: "Assets Under Advisory",
-    description: "Cumulative portfolio value managed",
+    value: "~$1.2 Tn",
+    label: "AUM Advised",
+    description: "Assets under management advised globally",
   },
   {
     icon: Award,
-    value: "20+",
+    value: "50+",
     label: "Years Combined Experience",
-    description: "Senior team expertise in consulting",
-  },
-  {
-    icon: Shield,
-    value: "100%",
-    label: "Client Confidentiality",
-    description: "Secure data handling and NDA compliance",
+    description: "Consulting, assurance, strategy, and investments",
   },
 ];
 
