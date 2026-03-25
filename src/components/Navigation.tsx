@@ -8,15 +8,15 @@ const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { label: "About Us", href: "/#about" },
+    { label: "About Us", href: "/about", isRoute: true },
     { label: "Services", href: "/#services" },
     { label: "Assessment", href: "/assessment", isRoute: true },
-    { label: "Knowledge", href: "#knowledge" },
+    { label: "Knowledge", href: "/knowledge", isRoute: true },
     { label: "Careers", href: "#careers" },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-sm border-b border-[rgba(56,111,164,0.3)]">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
@@ -31,7 +31,7 @@ const Navigation = () => {
                 <Link
                   key={item.label}
                   to={item.href}
-                  className="text-sm font-medium text-foreground hover:text-secondary transition-colors"
+                  className="text-sm font-medium text-muted-foreground hover:text-primary transition-all duration-200 ease-out"
                 >
                   {item.label}
                 </Link>
@@ -39,13 +39,17 @@ const Navigation = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="text-sm font-medium text-foreground hover:text-secondary transition-colors"
+                  className="text-sm font-medium text-muted-foreground hover:text-primary transition-all duration-200 ease-out"
                 >
                   {item.label}
                 </a>
               )
             ))}
-            <Button variant="default" size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+            <Button
+              variant="default"
+              size="lg"
+              className="bg-[var(--color-accent-blue)] text-[var(--color-text-primary)] hover:bg-[var(--color-accent-rose)] transition-all duration-200 ease-out"
+            >
               Contact Us
             </Button>
           </div>
@@ -55,7 +59,7 @@ const Navigation = () => {
             className="lg:hidden p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <Menu className="h-6 w-6 text-foreground" />
+            <Menu className="h-6 w-6 text-muted-foreground" />
           </button>
         </div>
 
@@ -68,7 +72,7 @@ const Navigation = () => {
                   <Link
                     key={item.label}
                     to={item.href}
-                    className="text-sm font-medium text-foreground hover:text-secondary transition-colors py-2"
+                    className="text-sm font-medium text-muted-foreground hover:text-primary transition-all duration-200 ease-out py-2"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.label}
@@ -77,14 +81,18 @@ const Navigation = () => {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="text-sm font-medium text-foreground hover:text-secondary transition-colors py-2"
+                    className="text-sm font-medium text-muted-foreground hover:text-primary transition-all duration-200 ease-out py-2"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.label}
                   </a>
                 )
               ))}
-              <Button variant="default" size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground w-full">
+              <Button
+                variant="default"
+                size="lg"
+                className="w-full bg-[var(--color-accent-blue)] text-[var(--color-text-primary)] hover:bg-[var(--color-accent-rose)] transition-all duration-200 ease-out"
+              >
                 Contact Us
               </Button>
             </div>

@@ -1,10 +1,19 @@
-import { Users, FileText, Settings, Handshake, LineChart, Briefcase } from "lucide-react";
+import { Users, FileText, Settings, Handshake, LineChart, Briefcase, type LucideIcon } from "lucide-react";
 
-const services = [
+type Tier = "corporate" | "asset";
+
+type ServiceItem = {
+  title: string;
+  icon: LucideIcon;
+  tier: Tier;
+  items: string[];
+};
+
+const services: ServiceItem[] = [
   {
     title: "Business Strategy",
     icon: Users,
-    category: "Corporate",
+    tier: "corporate",
     items: [
       "Strategy Consulting",
       "Business Plans & Strategy",
@@ -16,7 +25,7 @@ const services = [
   {
     title: "Business Operations",
     icon: Settings,
-    category: "Corporate",
+    tier: "corporate",
     items: [
       "Organizational Transformation Support",
       "Optimal Capital Structuring",
@@ -27,7 +36,7 @@ const services = [
   {
     title: "Review and Monitoring",
     icon: LineChart,
-    category: "Corporate",
+    tier: "corporate",
     items: [
       "Periodic Performance Evaluations (FP&A)",
       "Variance Analysis and Budget Review",
@@ -38,7 +47,7 @@ const services = [
   {
     title: "Project Feasibility Assessment",
     icon: FileText,
-    category: "Asset / Project Level",
+    tier: "asset",
     items: [
       "Feasibility Studies",
       "Opportunity Screening",
@@ -50,7 +59,7 @@ const services = [
   {
     title: "Transaction and Deal Advisory",
     icon: Handshake,
-    category: "Asset / Project Level",
+    tier: "asset",
     items: [
       "Asset Valuations",
       "Business Valuations",
@@ -62,7 +71,7 @@ const services = [
   {
     title: "Portfolio Management",
     icon: Briefcase,
-    category: "Asset / Project Level",
+    tier: "asset",
     items: [
       "Post-transaction Support",
       "Performance Assessment and Monitoring",
@@ -71,67 +80,133 @@ const services = [
   },
 ];
 
-const ServicesSection = () => {
+const TIER_LABEL: Record<Tier, string> = {
+  corporate: "CORPORATE",
+  asset: "ASSET / PROJECT LEVEL",
+};
+
+const TIER_TEXT: Record<Tier, string> = {
+  corporate: "#386FA4",
+  asset: "#954F72",
+};
+
+const TIER_TOP: Record<Tier, string> = {
+  corporate: "#386FA4",
+  asset: "#954F72",
+};
+
+const BULLET_BG: Record<Tier, string> = {
+  corporate: "#386FA4",
+  asset: "#954F72",
+};
+
+function TierHeader({ tier }: { tier: Tier }) {
   return (
-    <section id="services" className="py-20 lg:py-24 bg-muted/30">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-            Comprehensive Consulting Services
-          </h2>
-          <p className="text-base text-muted-foreground max-w-3xl mx-auto">
-            End-to-end strategic support across business operations, investment decisions, and portfolio optimization
-          </p>
+    <div className="mb-6 flex w-full items-center gap-4">
+      <div
+        className="h-px min-h-px flex-1"
+        style={{ background: "rgba(56, 111, 164, 0.3)" }}
+        aria-hidden
+      />
+      <span
+        className="shrink-0 text-[12px] font-medium uppercase tracking-[3px]"
+        style={{
+          color: TIER_TEXT[tier],
+          letterSpacing: "3px",
+        }}
+      >
+        {TIER_LABEL[tier]}
+      </span>
+      <div
+        className="h-px min-h-px flex-1"
+        style={{ background: "rgba(56, 111, 164, 0.3)" }}
+        aria-hidden
+      />
+    </div>
+  );
+}
+
+function ServiceCard({ service }: { service: ServiceItem }) {
+  const Icon = service.icon;
+  const tier = service.tier;
+  const isCorporate = tier === "corporate";
+
+  return (
+    <article
+      className="group rounded-[10px] border-x border-b border-[rgba(56,111,164,0.15)] border-t-[3px] bg-[#1A1A2E] px-7 py-8 transition-all duration-300 ease-out hover:-translate-y-[4px] hover:border-t-[#B8962E] hover:shadow-[0_12px_40px_rgba(56,111,164,0.15)]"
+      style={{ borderTopColor: TIER_TOP[tier] }}
+    >
+      <div
+        className="mb-5 flex h-[52px] w-[52px] items-center justify-center rounded-[10px] border"
+        style={{
+          background: "rgba(56, 111, 164, 0.08)",
+          borderColor: "rgba(56, 111, 164, 0.2)",
+        }}
+      >
+        <Icon
+          className="h-6 w-6 shrink-0"
+          style={{ color: isCorporate ? "#386FA4" : "#954F72" }}
+          strokeWidth={1.75}
+        />
+      </div>
+
+      <h3 className="mb-5 text-[18px] font-semibold leading-snug text-[#F0EDE8]">{service.title}</h3>
+      <div className="h-0.5 w-9 bg-[#B8962E]" style={{ width: 36, height: 2, marginBottom: 16 }} />
+
+      <ul className="m-0 list-none space-y-2 p-0">
+        {service.items.map((item, itemIndex) => (
+          <li key={itemIndex} className="flex items-start gap-2.5">
+            <span
+              className="mt-[0.35em] h-[5px] w-[5px] shrink-0 rotate-45 rounded-[1px]"
+              style={{ backgroundColor: BULLET_BG[tier] }}
+              aria-hidden
+            />
+            <span className="text-[13px] leading-[1.7] text-[#A8B2BD]">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+
+const ServicesSection = () => {
+  const corporate = services.filter((s) => s.tier === "corporate");
+  const asset = services.filter((s) => s.tier === "asset");
+
+  return (
+    <section id="services" className="bg-[#0D1B2A] py-[100px]">
+      <div className="container mx-auto max-w-6xl px-4 lg:px-8">
+        <h2 className="text-center text-[36px] font-bold leading-tight text-[#F0EDE8]">
+          Comprehensive Consulting Services
+        </h2>
+        <div
+          className="mx-auto h-[3px] w-[60px] bg-[#B8962E]"
+          style={{ margin: "12px auto 16px" }}
+        />
+        <p
+          className="mx-auto mb-[60px] max-w-[600px] text-center text-[#A8B2BD]"
+          style={{ lineHeight: 1.6 }}
+        >
+          End-to-end strategic support across business operations, investment decisions, and portfolio
+          optimization
+        </p>
+
+        <div className="mb-12">
+          <TierHeader tier="corporate" />
+          <div className="grid grid-cols-1 gap-5 min-[640px]:grid-cols-2 lg:grid-cols-3">
+            {corporate.map((service) => (
+              <ServiceCard key={service.title} service={service} />
+            ))}
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            const isCorporate = service.category === "Corporate";
-            
-            return (
-              <div
-                key={index}
-                className="bg-background rounded-lg p-6 lg:p-8 hover:shadow-md transition-shadow border-l-4"
-                style={{
-                  borderLeftColor: isCorporate ? "hsl(var(--secondary))" : "hsl(var(--accent))",
-                }}
-              >
-                <div className="flex items-start gap-4 mb-4">
-                  <div
-                    className="p-3 rounded-lg flex-shrink-0"
-                    style={{
-                      backgroundColor: isCorporate
-                        ? "hsl(var(--secondary) / 0.1)"
-                        : "hsl(var(--accent) / 0.1)",
-                    }}
-                  >
-                    <Icon
-                      className="w-6 h-6"
-                      style={{
-                        color: isCorporate ? "hsl(var(--secondary))" : "hsl(var(--accent))",
-                      }}
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">
-                      {service.category}
-                    </div>
-                    <h3 className="text-xl font-semibold text-foreground">{service.title}</h3>
-                  </div>
-                </div>
-
-                <ul className="space-y-2">
-                  {service.items.map((item, itemIndex) => (
-                    <li key={itemIndex} className="text-sm text-muted-foreground flex items-start gap-2">
-                      <span className="text-accent mt-1">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
+        <div>
+          <TierHeader tier="asset" />
+          <div className="grid grid-cols-1 gap-5 min-[640px]:grid-cols-2 lg:grid-cols-3">
+            {asset.map((service) => (
+              <ServiceCard key={service.title} service={service} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

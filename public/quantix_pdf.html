@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<title>Quantix Strategies — Case Studies in Strategic Leadership</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --navy:#0D1B2A; --gold:#B8962E; --light:#F7F5F1; --mid:#E8E4DC;
+    --gray:#6B7280; --white:#FFFFFF; --text:#1A1A2E;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body { font-family:'Inter',sans-serif; background:#eee; color:var(--text); }
+
+  /* ── SCREEN TOOLBAR ── */
+  #toolbar {
+    position:fixed; top:0; left:0; right:0; z-index:999;
+    background:var(--navy); padding:12px 32px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  #toolbar span { color:#9CA3AF; font-size:12px; letter-spacing:.15em; font-family:'Inter',sans-serif; }
+  #toolbar button {
+    background:var(--gold); border:none; color:var(--navy);
+    padding:9px 28px; font-size:12px; font-weight:600; letter-spacing:.1em;
+    cursor:pointer; font-family:'Inter',sans-serif; text-transform:uppercase;
+  }
+  #toolbar button:hover { background:#CFA83A; }
+
+  /* ── PAGE WRAPPER ── */
+  #pages { padding-top:56px; }
+
+  .page {
+    width:794px; min-height:1123px; margin:24px auto;
+    background:var(--white); box-shadow:0 4px 24px rgba(0,0,0,.12);
+    position:relative; overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background:var(--navy);
+    justify-content:center; align-items:center;
+  }
+  .cover-top-bar { position:absolute; top:0; left:0; right:0; height:5px; background:var(--gold); }
+  .cover-inner { text-align:center; padding:80px 60px; }
+  .cover-eyebrow { color:var(--gold); font-size:10px; letter-spacing:.35em; font-family:'Inter',sans-serif; margin-bottom:40px; text-transform:uppercase; }
+  .cover-title { color:var(--white); font-family:'Playfair Display',serif; font-size:52px; font-weight:400; line-height:1.12; margin-bottom:12px; }
+  .cover-title em { color:var(--gold); font-style:italic; }
+  .cover-rule { width:56px; height:2px; background:var(--gold); margin:36px auto; }
+  .cover-sub { color:#9CA3AF; font-size:13px; font-family:'Playfair Display',serif; font-style:italic; line-height:1.9; margin-bottom:60px; }
+  .cover-meta { color:#374151; font-size:10px; letter-spacing:.2em; font-family:'Inter',sans-serif; text-transform:uppercase; }
+  .cover-bottom { position:absolute; bottom:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--gold),#8B6914); }
+
+  /* ── TOC ── */
+  .toc-header { background:var(--navy); padding:44px 56px 36px; }
+  .toc-label { color:var(--gold); font-size:10px; letter-spacing:.3em; font-family:'Inter',sans-serif; margin-bottom:8px; text-transform:uppercase; }
+  .toc-title { color:var(--white); font-family:'Playfair Display',serif; font-size:36px; font-weight:400; }
+  .toc-body { padding:36px 56px; flex:1; }
+  .toc-item { display:flex; align-items:flex-start; gap:20px; padding:14px 0; border-bottom:1px solid var(--mid); }
+  .toc-item:last-child { border-bottom:none; }
+  .toc-num { color:var(--gold); font-size:11px; letter-spacing:.2em; font-family:'Playfair Display',serif; min-width:32px; padding-top:2px; }
+  .toc-info { flex:1; }
+  .toc-case-title { color:var(--navy); font-family:'Playfair Display',serif; font-size:15px; font-weight:400; margin-bottom:4px; }
+  .toc-tag { color:var(--gray); font-size:10px; letter-spacing:.12em; font-family:'Inter',sans-serif; text-transform:uppercase; }
+
+  /* ── CASE STUDY ── */
+  .cs-topbar { background:var(--navy); padding:16px 48px; display:flex; justify-content:space-between; align-items:center; }
+  .cs-firm { color:var(--white); font-size:10px; letter-spacing:.25em; font-family:'Inter',sans-serif; text-transform:uppercase; }
+  .cs-num { color:var(--gold); font-size:10px; letter-spacing:.2em; font-family:'Inter',sans-serif; }
+  .cs-gold-bar { height:3px; background:var(--gold); }
+
+  .cs-hero { background:var(--white); padding:36px 48px 28px; border-bottom:1px solid var(--mid); }
+  .cs-meta-row { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .cs-tag { background:var(--light); color:var(--gray); font-size:9px; padding:3px 12px; letter-spacing:.14em; font-family:'Inter',sans-serif; text-transform:uppercase; }
+  .cs-client-info { display:flex; gap:28px; margin-top:12px; }
+  .cs-client-block .lbl { color:var(--gray); font-size:9px; letter-spacing:.2em; font-family:'Inter',sans-serif; text-transform:uppercase; margin-bottom:3px; }
+  .cs-client-block .val { color:var(--navy); font-size:12px; font-family:'Playfair Display',serif; }
+  .cs-divider-v { width:1px; background:var(--mid); }
+  .cs-title { color:var(--navy); font-family:'Playfair Display',serif; font-size:28px; font-weight:400; line-height:1.22; }
+
+  .cs-callout { display:grid; grid-template-columns:1fr 1fr; background:var(--navy); }
+  .cs-quote { padding:28px 32px 28px 48px; border-right:1px solid #1E3448; }
+  .cs-quote-mark { color:var(--gold); font-size:36px; font-family:'Playfair Display',serif; line-height:.8; margin-bottom:6px; }
+  .cs-quote-text { color:var(--white); font-family:'Playfair Display',serif; font-size:14px; font-style:italic; line-height:1.65; }
+  .cs-stat { padding:28px 48px 28px 40px; display:flex; flex-direction:column; justify-content:center; }
+  .cs-stat-value { color:var(--gold); font-family:'Playfair Display',serif; font-size:30px; font-weight:400; line-height:1; }
+  .cs-stat-label { color:#9CA3AF; font-size:11px; font-family:'Inter',sans-serif; line-height:1.5; margin-top:6px; }
+
+  .cs-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--mid); flex:1; }
+  .cs-section { background:var(--white); padding:24px 28px; }
+  .cs-section-head { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+  .cs-section-icon { color:var(--gold); font-size:12px; }
+  .cs-section-lbl { color:var(--gray); font-size:9px; letter-spacing:.25em; font-family:'Inter',sans-serif; text-transform:uppercase; }
+  .cs-section-text { color:var(--navy); font-size:12px; font-family:'Playfair Display',serif; line-height:1.8; }
+  .cs-insight { background:var(--light); }
+  .cs-insight .cs-section-text { font-style:italic; color:#1B3A6B; }
+
+  .cs-footer { background:var(--navy); padding:12px 48px; display:flex; justify-content:space-between; align-items:center; }
+  .cs-footer-brand { color:#374151; font-size:9px; letter-spacing:.2em; font-family:'Inter',sans-serif; text-transform:uppercase; }
+  .cs-footer-page { color:var(--gold); font-size:9px; letter-spacing:.15em; font-family:'Inter',sans-serif; }
+
+  /* ── BACK COVER ── */
+  .backcover { background:var(--navy); justify-content:center; align-items:center; }
+  .backcover-inner { text-align:center; padding:80px 60px; }
+  .backcover-rule { width:40px; height:2px; background:var(--gold); margin:0 auto 40px; }
+  .backcover-title { color:var(--white); font-family:'Playfair Display',serif; font-size:28px; font-weight:400; line-height:1.4; margin-bottom:32px; }
+  .backcover-sub { color:#9CA3AF; font-size:13px; font-family:'Playfair Display',serif; font-style:italic; line-height:1.9; margin-bottom:48px; }
+  .backcover-cta { border:1px solid var(--gold); color:var(--gold); padding:14px 44px; font-size:10px; letter-spacing:.25em; font-family:'Inter',sans-serif; text-transform:uppercase; display:inline-block; margin-bottom:48px; }
+  .backcover-brand { color:#374151; font-size:10px; letter-spacing:.2em; font-family:'Inter',sans-serif; text-transform:uppercase; }
+
+  /* ── PRINT ── */
+  @media print {
+    #toolbar { display:none !important; }
+    #pages { padding-top:0; }
+    body { background:white; }
+    .page {
+      width:100%; min-height:100vh; margin:0; box-shadow:none;
+      page-break-after:always; page-break-inside:avoid;
+    }
+    .page:last-child { page-break-after:auto; }
+  }
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <span>QUANTIX STRATEGIES · CASE STUDY BOOK · 15 CASES</span>
+  <button onclick="window.print()">⬇ Export to PDF</button>
+</div>
+
+<div id="pages"></div>
+
+<script>
+const cases = [
+  {
+    id:"01", title:"When the Founder Is the Bottleneck",
+    client:"Growth-Stage Startup", industry:"Technology / SaaS", tag:"Startups & Founders",
+    quote:"Every decision ran through one person. The company was scaling. The founder wasn't.",
+    stat:{v:"18 months",l:"of bottlenecked decisions — resolved in one strategic intervention"},
+    problem:"A high-growth startup was scaling rapidly but every major decision ran through the founder. When the founder was unavailable, the organization was paralyzed. The leadership team had operational authority but no strategic autonomy — creating a ceiling on growth that no amount of hiring could fix.",
+    approach:"Quantix Strategies embedded alongside the founding team to map every decision type the organization was making, classify them by strategic vs. operational significance, and design a Decision Rights Framework. We then facilitated a leadership alignment session that transferred strategic ownership to function heads — with clear escalation paths and a founder-review cadence that preserved oversight without dependency.",
+    outcome:"Within 90 days, the leadership team was operating with full strategic autonomy on 70% of decisions previously escalated to the founder. The founder reclaimed 12+ hours per week for market-facing work. The organization shipped its quarterly roadmap on time for the first time in three cycles.",
+    insight:"Founder-dependence is not a leadership problem — it is a systems problem. Most founders don't hold on because they want to; they hold on because no architecture exists to let go safely. Build the architecture first."
+  },
+  {
+    id:"02", title:"The Succession Nobody Talked About",
+    client:"Second-Generation Family Business", industry:"Manufacturing & Distribution", tag:"Family Businesses",
+    quote:"The business was thriving. The family was avoiding the one conversation that could end it.",
+    stat:{v:"3 generations",l:"of family leadership — aligned on a single strategic succession roadmap for the first time"},
+    problem:"A second-generation family business with strong revenues had no strategic plan for leadership transition to the third generation. The family avoided the conversation until a health scare brought the urgency into sharp focus — at the worst possible moment to make a good decision.",
+    approach:"Quantix Strategies served as a neutral strategic advisor. We separated the family conversation from the business conversation — a critical distinction most advisors miss. Using a structured Succession Strategy Framework, we mapped the business's strategic requirements for its next phase, assessed leadership readiness, and designed a phased transition plan with governance structures every stakeholder could own.",
+    outcome:"A 5-year succession roadmap was agreed upon and documented — the first formal strategic plan in the company's 40-year history. A family governance charter was established. Two third-generation members entered defined developmental tracks, and an independent board seat was created to provide continuity.",
+    insight:"Succession planning is a strategy problem disguised as a family problem. The families that navigate it well are the ones that bring in a neutral voice early — before urgency forces a decision that emotions make messy."
+  },
+  {
+    id:"03", title:"The Government Tender That Changed Everything",
+    client:"Private Sector Organization", industry:"Infrastructure & Public Services", tag:"Government & Public Sector",
+    quote:"Everyone else competed on price. We competed on strategic alignment. There was no contest.",
+    stat:{v:"4×",l:"larger contract value secured by repositioning as a long-term strategic partner"},
+    problem:"A government agency announced a large procurement initiative. A private sector client was eager to compete but approached it as a transaction — lowest price, fastest delivery, standard scope. They were reading the surface of the tender, not the policy intent beneath it.",
+    approach:"Quantix Strategies decoded the policy signals embedded in the tender documentation — the language, evaluation criteria, the unstated strategic objectives the government was trying to achieve. We repositioned the client's response from a vendor proposal to a strategic partnership submission, aligned with the agency's 5-year mandate.",
+    outcome:"The client was awarded the contract at a value significantly above the original scope, as the government expanded the engagement to include strategic advisory components. The relationship also positioned them as a preferred partner for two subsequent initiatives — neither of which went to open tender.",
+    insight:"Governments don't buy products or services. They buy confidence — that a partner understands what they are trying to achieve and will protect them from the risk of failure. Price is almost never the real decision variable."
+  },
+  {
+    id:"04", title:"When a Conglomerate Tried to Act Like a Startup",
+    client:"Diversified Conglomerate", industry:"Multi-sector / New Ventures", tag:"Conglomerates & Large Corporates",
+    quote:"They wanted startup speed inside a conglomerate structure. The structure always won.",
+    stat:{v:"11→4 months",l:"time-to-market after restructuring the venture operating model"},
+    problem:"A large conglomerate wanted to launch a new venture in a high-growth sector. They applied existing procurement, HR, and governance processes and expected startup speed. Twelve months in, they had a team, a budget, and almost no progress. Talent was leaving for actual startups.",
+    approach:"Quantix Strategies designed a separate strategic operating model for the new venture — with its own decision rights, performance metrics, talent philosophy, and governance cadence. We negotiated the precise 'air gap' between the venture and the parent, defining which conglomerate resources the venture could access and which processes it was exempt from.",
+    outcome:"The venture launched its MVP within 4 months of the new operating model being implemented. Key talent was retained. The parent conglomerate adopted elements of the model for two other internal ventures, creating a repeatable playbook for corporate venture building.",
+    insight:"You cannot run a new venture with old company infrastructure. The governance, metrics, and hiring all need rebuilding for the new entity's reality. The parent's job is to provide capital and strategic air cover — then step back."
+  },
+  {
+    id:"05", title:"The MNC That Mistook a Market for Its Headquarters",
+    client:"Multinational Corporation", industry:"Consumer Goods / Retail", tag:"MNCs & International Businesses",
+    quote:"They had the playbook. The market just refused to read it.",
+    stat:{v:"18 months",l:"lost executing the wrong strategy before an embedded strategic reset changed direction"},
+    problem:"A multinational entered a new geography expecting it to behave like its home market — same positioning, same channel strategy, same org design. Eighteen months in, market share was flat, key distributor relationships were strained, and regional leadership was spending more time defending decisions to HQ than making new ones.",
+    approach:"Quantix Strategies conducted an embedded strategic assessment — interviewing local stakeholders, mapping the regulatory and competitive landscape, and identifying where the global playbook was misaligned with local market reality. We facilitated a strategy reset with both regional and global leadership, creating a localized plan that preserved global brand integrity while giving the regional team genuine autonomy.",
+    outcome:"The MNC restructured its channel strategy, rebuilt two key distributor relationships, and realigned its product positioning to local purchasing behavior. Within two quarters, market share began recovering. The regional leadership team's mandate was expanded.",
+    insight:"The most expensive assumption a multinational can make is that success in one market is a template for the next. Every market has its own power structure, trust dynamics, and decision logic. Global winners stay genuinely curious about each new context."
+  },
+  {
+    id:"06", title:"Strategy Without Execution Is Just a Document",
+    client:"Mid-Size Enterprise", industry:"Financial Services", tag:"Universal — All Client Types",
+    quote:"The strategy was excellent. It lived in a shared drive. Nobody could find it.",
+    stat:{v:"6 months",l:"post-strategy with zero execution — resolved with a 90-day operating rhythm"},
+    problem:"An organization had invested significantly in a strategy development process. Leadership was aligned. The document was thorough and well-presented. Six months later, the business was operating identically to how it had before. The strategy had not translated into a single changed behavior, decision, or priority.",
+    approach:"Quantix Strategies ran a Strategy Activation process — a translation exercise, not another planning exercise. We converted strategic priorities into a 90-day roadmap with named owners, defined decision checkpoints, and visible progress indicators. We introduced a monthly Strategy Operations Review — a 90-minute leadership ritual that kept strategy visible and accountable.",
+    outcome:"Within the first 90-day cycle, three major strategic initiatives that had been stalled for months were unblocked and actively progressing. The leadership team reported the monthly rhythm changed the quality of their conversations — from operational firefighting to genuine strategic steering.",
+    insight:"Strategy activation is a distinct skill from strategy development. Most organizations are good at the latter and almost completely unprepared for the former. The question is never 'do we have a strategy?' — it is always 'does our strategy change anything we do on Monday morning?'"
+  },
+  {
+    id:"07", title:"Raising Capital Without a Strategy Story",
+    client:"Series A Startup", industry:"Health Technology", tag:"Startups & Founders",
+    quote:"The product worked. The numbers were real. The story wasn't there yet.",
+    stat:{v:"3 failed pitches",l:"before a strategic narrative reframe — followed by term sheet within 60 days"},
+    problem:"A health technology startup had strong product-market fit, real revenue, and a credible team. After pitching a dozen investors across three months, the consistent feedback was: 'We love the product but we're not sure about the opportunity.' The founders were confused — the market was large, the product worked. What were investors not seeing?",
+    approach:"Quantix Strategies rebuilt the strategic narrative from first principles — not the pitch deck, but the underlying strategic logic it needed to express. We answered three questions: Why is this the right moment in history for this company to exist? Why is this team the inevitable owner of this opportunity? What does winning in this market actually look like at scale?",
+    outcome:"The revised pitch reframed the company not as a health tech product but as the infrastructure layer for a structural shift in how healthcare delivery was being financed. The first investor pitched with the new narrative issued a term sheet. The round closed oversubscribed.",
+    insight:"Investors don't fund businesses — they fund narratives about the future in which your business is the most important actor. The financial model validates the narrative; it does not replace it. If your pitch isn't working, the numbers are rarely the problem."
+  },
+  {
+    id:"08", title:"The Org Chart That Was Killing the Strategy",
+    client:"Family-Owned Conglomerate", industry:"Real Estate & Hospitality", tag:"Conglomerates & Family Businesses",
+    quote:"The strategy said go right. The structure kept pulling left. Structure was winning.",
+    stat:{v:"6×",l:"faster strategic decision-making after removing four unnecessary approval layers"},
+    problem:"A growing organization's leadership structure had not evolved alongside its strategy. Strategic decisions were being made three levels below where they should be. The people closest to the market had no authority. Accountability was diffuse. The leadership team had been stuck — by their own description — for two years.",
+    approach:"Quantix Strategies conducted a Strategic Org Design process — mapping which decisions needed to be made, at what frequency, with what information, and by whom. We identified three structural misalignments where the org chart was directly contradicting the strategy, then implemented a redesign in phases to preserve stability while progressively shifting authority.",
+    outcome:"Three senior leadership roles were redesigned with expanded strategic mandates. Four approval layers were reduced to two. A leadership team that had been unable to move on key decisions for 18 months closed two major deals and launched one new business line within the following quarter.",
+    insight:"Organization design is one of the most powerful and most neglected strategic levers available to leadership. Structure is not neutral — it encodes priorities, power, and pace. When strategy changes, structure must follow. If it doesn't, the old structure will outlast the new strategy every time."
+  },
+  {
+    id:"09", title:"When Two Departments Had Two Different Strategies",
+    client:"B2B Services Company", industry:"Professional Services", tag:"Universal — All Client Types",
+    quote:"Commercial wanted growth at all costs. Operations wanted margin preservation. Neither knew the other's mandate.",
+    stat:{v:"₹4Cr+",l:"estimated annual revenue impact from misalignment — identified and resolved"},
+    problem:"A company's commercial team was pursuing growth aggressively, often at unsustainable margins. Its operations team was focused on margin protection — sometimes at the cost of service quality. Neither function knew what the other was optimizing for. The result was internal conflict presenting as missed targets and high client churn.",
+    approach:"Quantix Strategies ran a Cross-Functional Strategy Alignment process — building a shared operating thesis for the business. We developed a unified definition of an 'ideal client,' a joint growth and margin model, and a quarterly planning rhythm that required both functions to sign off on growth targets together.",
+    outcome:"Client acquisition criteria were tightened — resulting in 20% fewer new clients but 35% improvement in retention. Gross margin improved materially within two quarters. The leadership team reported the monthly conflict between commercial and operations had effectively ceased.",
+    insight:"Most internal conflict is not a people problem — it is a systems problem. When two teams pull in opposite directions, it is almost always because they have been given different mandates and are both doing exactly what they were told. Alignment starts with a shared definition of winning."
+  },
+  {
+    id:"10", title:"The Market Research That Cost Millions by Not Happening",
+    client:"Consumer-Facing Startup", industry:"Food & Beverage", tag:"Startups & Family Businesses",
+    quote:"The signals were all there. Nobody had built the process to read them.",
+    stat:{v:"$2M+",l:"deployed into the wrong market — redirectable for under $50K with prior assessment"},
+    problem:"A startup launched a new product based on founder conviction and informal feedback. The team moved fast and invested heavily in distribution. A year in, the product had traction in a completely different segment than targeted — and the original segment was structurally underserved for reasons visible in the data before launch.",
+    approach:"Quantix Strategies designed a Strategic Market Assessment framework — a 30-day process combining desk research, competitor signal analysis, channel interviews, and customer archetype mapping. Applied to the company's next planned market move, it generated a segment prioritization recommendation that shifted their expansion focus before capital was committed.",
+    outcome:"The company pivoted its next product launch to the segment the framework identified as highest-probability. Early sales velocity outperformed the original launch by a factor of three. The assessment framework was adopted as a standing pre-launch process.",
+    insight:"Market research is not a checkbox or a cost — it is a risk management instrument. Every dollar spent understanding a market before entry is worth at least ten dollars saved from entering the wrong one. The most expensive research is the research that doesn't happen."
+  },
+  {
+    id:"11", title:"The Board That Couldn't Agree on Anything",
+    client:"Mid-Market Company", industry:"Technology / B2B", tag:"Conglomerates & Family Businesses",
+    quote:"They had the right people in the room. They just had the wrong conversation at the table.",
+    stat:{v:"14 months",l:"of board deadlock — broken with a single strategic alignment intervention"},
+    problem:"A mid-market company with a high-quality board had been unable to reach consensus on three critical strategic decisions for over a year. Each board meeting ended without resolution. The CEO was caught between competing factions. The management team had stopped bringing strategic questions to the board because nothing came out of it.",
+    approach:"Quantix Strategies facilitated a Board Strategy Alignment process — separate from the board meeting itself. We conducted individual conversations with each board member to understand their underlying concerns, mapped where genuine disagreement existed versus where misaligned assumptions were creating artificial conflict, and redesigned the decision-making protocol for high-stakes board discussions.",
+    outcome:"All three stalled decisions were resolved within two board cycles. A new board decision framework was adopted permanently. The CEO reported a material improvement in board meeting quality and a reduction in time spent managing board dynamics — freeing leadership bandwidth for actual strategy.",
+    insight:"Board deadlock is rarely about the decision on the table. It is almost always about unresolved assumptions, unspoken concerns, or misaligned definitions of success. The fastest way to break a deadlock is to surface what is actually blocking it — and that rarely happens inside the boardroom."
+  },
+  {
+    id:"12", title:"Scaling Without Losing What Made You Great",
+    client:"High-Growth Startup", industry:"EdTech / Consumer", tag:"Startups & Founders",
+    quote:"They tripled headcount in 18 months. The culture that built the product didn't survive the hiring.",
+    stat:{v:"3×",l:"headcount growth in 18 months — managed without loss of founding-team culture or product quality"},
+    problem:"A fast-growing startup had tripled its team in 18 months. The product quality that had driven early growth was declining. Founding-team members were disengaged. New hires were confused about how decisions were made and what the company actually stood for. The culture had not been designed — it had been inherited, and it wasn't scaling.",
+    approach:"Quantix Strategies conducted a Culture & Operating Model Audit — interviewing across tenure levels to identify what was actually driving performance versus what was mythology. We separated the elements of culture that were genuinely competitive advantages from those that were artifacts of the startup phase. A Culture Architecture document was developed and translated into hiring, onboarding, and performance frameworks.",
+    outcome:"Founding-team retention improved materially. New hire time-to-productivity reduced by 40%. Product quality metrics stabilized within two quarters. The Culture Architecture document became the basis for the company's employer brand narrative in subsequent fundraising.",
+    insight:"Culture is not a feeling — it is a system. It is the sum of what gets rewarded, what gets tolerated, and what gets celebrated. If you don't design it intentionally as you scale, the organization will design it for you — and you may not like what it builds."
+  },
+  {
+    id:"13", title:"The Strategic Partnership That Almost Destroyed Both Companies",
+    client:"Two Mid-Market Organizations", industry:"Logistics & Supply Chain", tag:"Conglomerates & Family Businesses",
+    quote:"On paper, it was the perfect partnership. In practice, neither side had defined what they actually needed from each other.",
+    stat:{v:"9 months",l:"into a troubled partnership — fully restructured and value-creating within 6 months of strategic reset"},
+    problem:"Two companies had entered a strategic partnership that looked compelling on paper — complementary capabilities, shared markets, strong founding chemistry. Nine months in, the relationship had deteriorated significantly. Each party felt the other was not delivering. Revenue projections had not materialized. The CEOs were no longer speaking directly.",
+    approach:"Quantix Strategies was brought in as a neutral strategic advisor to both parties. We conducted a Partnership Diagnostic — mapping the original value thesis against what had actually been built, identifying where structural misalignments (rather than bad faith) were driving the dysfunction. A revised Partnership Charter was negotiated, with clear deliverables, decision rights, and exit provisions.",
+    outcome:"The partnership was restructured with a narrower, more focused value thesis. Within two quarters, both parties were generating measurable value from the relationship. The revised charter became the template for both organizations' future partnership structures.",
+    insight:"Most strategic partnerships fail not because the strategy was wrong, but because the operating agreement was incomplete. The value thesis is the easy part. Defining what each party owes the other, who decides what, and how conflict gets resolved — that is the work that determines whether a partnership survives contact with reality."
+  },
+  {
+    id:"14", title:"When the Data Said One Thing and Leadership Said Another",
+    client:"Retail & Consumer Business", industry:"Retail / D2C", tag:"Universal — All Client Types",
+    quote:"The data was clear. The conviction in the room was louder. Conviction won. It shouldn't have.",
+    stat:{v:"₹8Cr",l:"in avoidable inventory write-down — traceable to a single strategic decision made against the data"},
+    problem:"A consumer business had invested in a new product line based on leadership conviction that contradicted their own customer research. The data showed limited appetite in the target segment. Leadership dismissed the research as 'not capturing the real customer.' The product was launched at scale. The market responded exactly as the data had predicted.",
+    approach:"Quantix Strategies worked with the leadership team retrospectively and then prospectively — building a Strategic Decision Protocol that defined the evidentiary standard required before major capital commitments. We introduced a Red Team process: for every major strategic decision, a designated team was required to make the strongest possible case against it before the decision was finalized.",
+    outcome:"The Red Team process surfaced fatal flaws in two subsequent product launch decisions before capital was committed — saving an estimated ₹12Cr in potential write-downs. The protocol was adopted across all business units. Leadership reported that the quality of strategic discussion improved materially.",
+    insight:"The most dangerous moment in any organization is when a leader's conviction overrides the evidence in the room. The solution is not better data — it is a process that makes it structurally safe to challenge a strongly-held view before the decision is irreversible."
+  },
+  {
+    id:"15", title:"The $0 Cost Strategy That Was Costing Everything",
+    client:"Professional Services Firm", industry:"Consulting / Advisory", tag:"Startups & Family Businesses",
+    quote:"They had no pricing strategy. Their clients had figured that out. And they were using it.",
+    stat:{v:"22%",l:"average revenue uplift within two quarters of implementing a value-based pricing model"},
+    problem:"A professional services firm had been pricing based on cost-plus for years — calculating their time and adding a margin. They were consistently the lowest-priced credible option in their market. Clients were comparing them to cheaper alternatives on cost alone. The firm was growing but not profitably — and the team was exhausted from overdelivering at underpriced engagements.",
+    approach:"Quantix Strategies designed a Value-Based Pricing Transition — working with the leadership team to map the actual outcomes their clients achieved, quantify the value delivered versus the fees charged, and rebuild the pricing architecture around client outcomes rather than service inputs. We also redesigned the firm's proposal process to lead with value before introducing price.",
+    outcome:"Average engagement value increased by 22% within two quarters. Client acquisition volume reduced slightly but engagement profitability improved significantly. The team reported a material improvement in how clients perceived the quality of their work — because the price signal had changed the client's expectation.",
+    insight:"Pricing is a strategic statement about the value you believe you create. When you price low, you are telling your clients — and your team — that you don't believe your own work is worth much. Pricing strategy is not a finance decision. It is a positioning decision."
+  }
+];
+
+const pages = document.getElementById('pages');
+
+// ── COVER
+pages.innerHTML += `
+<div class="page cover">
+  <div class="cover-top-bar"></div>
+  <div class="cover-inner">
+    <div class="cover-eyebrow">Quantix Strategies</div>
+    <div class="cover-title">Case Studies in<br><em>Strategic Leadership</em></div>
+    <div class="cover-rule"></div>
+    <div class="cover-sub">Fifteen real-world situations where the right strategic<br>intervention changed the trajectory of an organization.</div>
+    <div class="cover-meta">Fractional CSO Advisory · Established 2025 · Confidential</div>
+  </div>
+  <div class="cover-bottom"></div>
+</div>`;
+
+// ── TOC (split into 2 pages)
+const half = Math.ceil(cases.length / 2);
+[cases.slice(0,half), cases.slice(half)].forEach((group, gi) => {
+  let rows = group.map(c => `
+    <div class="toc-item">
+      <div class="toc-num">${c.id}</div>
+      <div class="toc-info">
+        <div class="toc-case-title">${c.title}</div>
+        <div class="toc-tag">${c.tag} · ${c.client} · ${c.industry}</div>
+      </div>
+    </div>`).join('');
+  pages.innerHTML += `
+  <div class="page">
+    <div class="toc-header">
+      <div class="toc-label">Table of Contents</div>
+      <div class="toc-title">${gi===0?'Case Studies 01 – 08':'Case Studies 09 – 15'}</div>
+    </div>
+    <div class="toc-body">${rows}</div>
+    <div class="cs-footer">
+      <span class="cs-footer-brand">Quantix Strategies · Confidential</span>
+      <span class="cs-footer-page">Contents ${gi+1} of 2</span>
+    </div>
+  </div>`;
+});
+
+// ── CASE STUDIES
+cases.forEach((c, i) => {
+  pages.innerHTML += `
+  <div class="page">
+    <div class="cs-topbar">
+      <span class="cs-firm">Quantix Strategies</span>
+      <span class="cs-num">Case Study ${c.id} of ${cases.length}</span>
+    </div>
+    <div class="cs-gold-bar"></div>
+    <div class="cs-hero">
+      <div class="cs-meta-row">
+        <span class="cs-tag">${c.tag.toUpperCase()}</span>
+      </div>
+      <div class="cs-title">${c.title}</div>
+      <div class="cs-client-info">
+        <div class="cs-client-block"><div class="lbl">Client Type</div><div class="val">${c.client}</div></div>
+        <div class="cs-divider-v"></div>
+        <div class="cs-client-block"><div class="lbl">Industry Context</div><div class="val">${c.industry}</div></div>
+      </div>
+    </div>
+    <div class="cs-callout">
+      <div class="cs-quote">
+        <div class="cs-quote-mark">"</div>
+        <div class="cs-quote-text">${c.quote}</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-value">${c.stat.v}</div>
+        <div class="cs-stat-label">${c.stat.l}</div>
+      </div>
+    </div>
+    <div class="cs-grid">
+      <div class="cs-section">
+        <div class="cs-section-head"><span class="cs-section-icon">○</span><span class="cs-section-lbl">The Situation</span></div>
+        <div class="cs-section-text">${c.problem}</div>
+      </div>
+      <div class="cs-section">
+        <div class="cs-section-head"><span class="cs-section-icon">◇</span><span class="cs-section-lbl">Our Approach</span></div>
+        <div class="cs-section-text">${c.approach}</div>
+      </div>
+      <div class="cs-section">
+        <div class="cs-section-head"><span class="cs-section-icon">△</span><span class="cs-section-lbl">The Outcome</span></div>
+        <div class="cs-section-text">${c.outcome}</div>
+      </div>
+      <div class="cs-section cs-insight">
+        <div class="cs-section-head"><span class="cs-section-icon">□</span><span class="cs-section-lbl">Key Insight</span></div>
+        <div class="cs-section-text">${c.insight}</div>
+      </div>
+    </div>
+    <div class="cs-footer">
+      <span class="cs-footer-brand">Quantix Strategies · Confidential · Not for Distribution</span>
+      <span class="cs-footer-page">Page ${i + 4} of ${cases.length + 4}</span>
+    </div>
+  </div>`;
+});
+
+// ── BACK COVER
+pages.innerHTML += `
+<div class="page backcover">
+  <div class="cover-top-bar"></div>
+  <div class="backcover-inner">
+    <div class="backcover-rule"></div>
+    <div class="backcover-title">Every one of these situations<br>has something in common.</div>
+    <div class="backcover-sub">The problem on the surface was never the real problem.<br>The organizations that moved forward were the ones that found<br>someone who could see both — and knew what to do about it.</div>
+    <div class="backcover-cta">Quantix Strategies · Fractional CSO Advisory</div>
+    <div class="backcover-brand">Established 2025 · Strategy · Execution · Embedded</div>
+  </div>
+  <div class="cover-bottom"></div>
+</div>`;
+</script>
+</body>
+</html>

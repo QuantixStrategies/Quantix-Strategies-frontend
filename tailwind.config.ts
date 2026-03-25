@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        playfair: ['"Playfair Display"', "Georgia", "serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -62,7 +65,12 @@ export default {
         "blue-light": "hsl(var(--blue-light))",
         "blue-sky": "hsl(var(--blue-sky))",
         "blue-pale": "hsl(var(--blue-pale))",
-        teal: "hsl(var(--teal))",
+        rose: "hsl(var(--rose))",
+        gold: "hsl(var(--gold))",
+        "qx-bg": {
+          primary: "var(--color-bg-primary)",
+          secondary: "var(--color-bg-secondary)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -71,25 +79,37 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "ethos-breathing": {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.06)" },
+        },
+        "ethos-pulse-glow": {
+          "0%, 100%": { opacity: "0.6", boxShadow: "0 0 40px rgba(149, 79, 114, 0.2)" },
+          "50%": { opacity: "1", boxShadow: "0 0 60px rgba(56, 111, 164, 0.35)" },
+        },
+        "ethos-underline": {
+          from: { width: "0" },
+          to: { width: "60px" },
+        },
+        "ethos-fade-up": {
+          from: { opacity: "0", transform: "translateY(20px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "ethos-breathing": "ethos-breathing 3.5s ease-in-out infinite",
+        "ethos-pulse-glow": "ethos-pulse-glow 2.5s ease-in-out infinite",
+        "ethos-underline": "ethos-underline 0.5s ease-out forwards",
+        "ethos-fade-up": "ethos-fade-up 0.5s ease-out forwards",
       },
     },
   },

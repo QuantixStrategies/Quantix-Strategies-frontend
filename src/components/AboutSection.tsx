@@ -35,7 +35,7 @@ const visionPoints = [
 
 const AboutSection = () => {
   return (
-    <section id="about" className="py-20 lg:py-28 bg-background">
+    <section id="about" className="py-20 lg:py-28 bg-[var(--color-bg-primary)]">
       <div className="container mx-auto px-4 lg:px-8 space-y-20">
 
         {/* Company Overview */}
@@ -43,10 +43,10 @@ const AboutSection = () => {
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
             About Quantix Strategies
           </h2>
-          <div className="w-16 h-1 bg-accent mx-auto mb-10"></div>
+          <div className="w-16 h-1 bg-gold mx-auto mb-10" />
 
-          <div className="bg-primary/5 border-l-4 border-accent p-8 lg:p-12 text-left">
-            <div className="text-4xl text-accent font-serif mb-4">"</div>
+          <div className="bg-card/80 border-l-4 border-[var(--color-accent-rose)] p-8 lg:p-12 text-left rounded-r-lg border border-[rgba(56,111,164,0.25)]">
+            <div className="text-4xl text-gold font-serif mb-4">"</div>
             <p className="text-base lg:text-lg text-foreground leading-relaxed italic">
               Established in 1998, Quantix Strategies Inc (formerly SMACo.) is a trusted consulting and business services firm, focused on driving meaningful transformation through deep insights, strategic foresight, and precise execution
             </p>
@@ -56,19 +56,19 @@ const AboutSection = () => {
         {/* Vision & Mission */}
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 mb-8">
-            <div className="bg-accent/10 p-2.5 rounded-lg">
-              <Target className="w-6 h-6 text-accent" />
+            <div className="bg-card p-2.5 rounded-lg border border-[rgba(56,111,164,0.2)]">
+              <Target className="w-6 h-6 text-primary" />
             </div>
             <h3 className="text-2xl lg:text-3xl font-bold text-foreground">
               Vision & Mission
             </h3>
           </div>
 
-          <div className="border border-border rounded-lg p-8 lg:p-10 bg-card">
+          <div className="border border-[rgba(56,111,164,0.25)] rounded-lg p-8 lg:p-10 bg-card">
             <ul className="space-y-5">
               {visionPoints.map((point, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2.5 flex-shrink-0"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold mt-2.5 flex-shrink-0" />
                   <p className="text-base text-muted-foreground leading-relaxed">{point}</p>
                 </li>
               ))}
@@ -79,8 +79,8 @@ const AboutSection = () => {
         {/* Management Team */}
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 mb-8">
-            <div className="bg-accent/10 p-2.5 rounded-lg">
-              <Globe className="w-6 h-6 text-accent" />
+            <div className="bg-card p-2.5 rounded-lg border border-[rgba(56,111,164,0.2)]">
+              <Globe className="w-6 h-6 text-primary" />
             </div>
             <h3 className="text-2xl lg:text-3xl font-bold text-foreground">
               Management Team
@@ -89,7 +89,7 @@ const AboutSection = () => {
 
           <div className="space-y-8">
             {teamMembers.map((member, index) => (
-              <div key={index} className="border border-border rounded-lg p-8 lg:p-10 bg-card">
+              <div key={index} className="border border-[rgba(56,111,164,0.25)] rounded-lg p-8 lg:p-10 bg-card">
                 <div className="mb-4">
                   <span className="text-lg font-bold text-foreground">{member.name}</span>
                   <span className="text-base italic text-secondary ml-2">{member.title}</span>
@@ -109,8 +109,8 @@ const AboutSection = () => {
         {/* Advisors */}
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 mb-8">
-            <div className="bg-accent/10 p-2.5 rounded-lg">
-              <Globe className="w-6 h-6 text-accent" />
+            <div className="bg-card p-2.5 rounded-lg border border-[rgba(56,111,164,0.2)]">
+              <Globe className="w-6 h-6 text-primary" />
             </div>
             <h3 className="text-2xl lg:text-3xl font-bold text-foreground">
               Advisors
@@ -119,7 +119,7 @@ const AboutSection = () => {
 
           <div className="space-y-8">
             {advisors.map((advisor, index) => (
-              <div key={index} className="border border-border rounded-lg p-8 lg:p-10 bg-card">
+              <div key={index} className="border border-[rgba(56,111,164,0.25)] rounded-lg p-8 lg:p-10 bg-card">
                 <div className="mb-4">
                   <span className="text-lg font-bold text-foreground">{advisor.name}</span>
                   <span className="text-base italic text-secondary ml-2">{advisor.title}</span>
