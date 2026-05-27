@@ -1,4 +1,6 @@
 import quantixLogo from "@/assets/quantix-logo.png";
+import quantixLogo2x from "@/assets/quantix-logo@2x.png";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -7,7 +9,17 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <img src={quantixLogo} alt="Quantix Strategies" className="h-12 mb-4 opacity-95" />
+            <Link to="/" className="mb-4 inline-flex transition-opacity hover:opacity-90">
+              <img
+                src={quantixLogo}
+                srcSet={`${quantixLogo} 1x, ${quantixLogo2x} 2x`}
+                width={272}
+                height={105}
+                alt="Quantix Strategies"
+                decoding="async"
+                className="h-12 w-[124px] object-contain object-left sm:h-[52px] sm:w-[135px]"
+              />
+            </Link>
             <p className="text-sm text-muted-foreground">
               Offshore consulting for family offices and institutional investors worldwide
             </p>
@@ -25,12 +37,12 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a
-                  href="#services"
+                <Link
+                  to={{ pathname: "/", hash: "#services" }}
                   className="text-sm text-muted-foreground hover:text-primary transition-all duration-200 ease-out"
                 >
                   Services
-                </a>
+                </Link>
               </li>
               <li>
                 <a

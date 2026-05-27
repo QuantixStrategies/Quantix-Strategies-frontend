@@ -60,9 +60,23 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Assessment lead capture (Netlify)
+
+The `/assessment` flow emails submissions (lead form + all Q&A + score) via a Netlify Function and [Resend](https://resend.com).
+
+1. Deploy on Netlify with build command `npm run build` and publish directory `dist` (see `netlify.toml`).
+2. In Netlify → Site settings → Environment variables, set:
+   - `RESEND_API_KEY` — from Resend dashboard
+   - `ASSESSMENT_NOTIFY_EMAIL` — `info@quantixstrategies.com`
+   - `ASSESSMENT_FROM_EMAIL` — a verified sender on your domain (e.g. `assessments@quantixstrategies.com`)
+3. Verify your domain in Resend before production.
+4. Local functions: `netlify dev` (requires [Netlify CLI](https://docs.netlify.com/cli/get-started/)) and a `.env` copied from `.env.example`.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/e0046b49-c2ae-42d9-b958-eaa6eae0cccd) and click on Share -> Publish.
+
+For assessment email delivery, prefer Netlify deploy with the environment variables above.
 
 ## Can I connect a custom domain to my Lovable project?
 

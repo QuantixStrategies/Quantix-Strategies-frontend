@@ -109,7 +109,7 @@ export function HeroNoiseSignalCanvas() {
 
       const xWaveStart = WAVE_X0 * w;
 
-      // —— Background: gradient + radial glow ——
+      // - Background: gradient + radial glow -
       const lg = ctx.createLinearGradient(0, 0, w, 0);
       lg.addColorStop(0, "#0D1B2A");
       lg.addColorStop(1, "#1A1A2E");
@@ -125,7 +125,7 @@ export function HeroNoiseSignalCanvas() {
       ctx.fillStyle = rg;
       ctx.fillRect(0, 0, w, h);
 
-      // —— Noise field (left 40%): fade + segments ——
+      // - Noise field (left 40%): fade + segments -
       ctx.fillStyle = "rgba(13,27,42,0.14)";
       ctx.fillRect(0, 0, w * LEFT_END, h);
 
@@ -146,7 +146,7 @@ export function HeroNoiseSignalCanvas() {
         ctx.stroke();
       }
 
-      // —— Sine waves (right 50%) ——
+      // - Sine waves (right 50%) -
       const phase = time * 1.15;
       const drawWave = (amp: number, stroke: string, lineW: number, phaseOff: number) => {
         ctx.strokeStyle = stroke;
@@ -167,7 +167,7 @@ export function HeroNoiseSignalCanvas() {
       drawWave(0.065, "rgba(184,150,46,0.3)", 1.2, Math.PI / 4);
       drawWave(0.045, "rgba(56,111,164,0.22)", 1, Math.PI / 2.2);
 
-      // —— Update particles ——
+      // - Update particles -
       const waveAmp = 0.11 * h;
       for (const p of particles) {
         const t = smoothT(p.x, w);
@@ -208,7 +208,7 @@ export function HeroNoiseSignalCanvas() {
         }
       }
 
-      // —— Connection lines (transition zone only) ——
+      // - Connection lines (transition zone only) -
       const zL = LEFT_END * w;
       const zR = RIGHT_START * w;
       ctx.lineWidth = 1;
@@ -229,7 +229,7 @@ export function HeroNoiseSignalCanvas() {
         }
       }
 
-      // —— Draw particles ——
+      // - Draw particles -
       for (const p of particles) {
         const t = smoothT(p.x, w);
         const flicker = 0.35 + 0.35 * Math.sin(time * 3.2 + p.seed * 0.01);
@@ -246,7 +246,7 @@ export function HeroNoiseSignalCanvas() {
         ctx.fill();
       }
 
-      // —— Label ——
+      // - Label -
       ctx.font = "10px ui-monospace, monospace";
       ctx.fillStyle = `rgba(${COL_GOLD.r},${COL_GOLD.g},${COL_GOLD.b},0.4)`;
       ctx.textAlign = "right";

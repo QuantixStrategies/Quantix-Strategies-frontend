@@ -3,7 +3,7 @@ import { Target, Globe } from "lucide-react";
 const teamMembers = [
   {
     name: "Samridhhi M.",
-    title: "Partner",
+    title: "Principal",
     bio: "Samridhhi brings 8+ years of experience in strategy, deal advisory, and financial analysis. As a seasoned professional in the strategy division at Quantix Strategies, she honed her expertise in research, competitive intelligence, strategy frameworks, etc., to identify and execute opportunities across family offices, conglomerates, government, etc., with a combined AUM of ~$50 Bn. Samridhhi holds a dual masters in Economics and Statistics from Indian Statistical Institute, Kolkata. Additionally, she has cleared two levels of Chartered Accountancy course of the Institute of Chartered Accountants of India (ICAI), reflecting her strong foundation in financial management and strategic decision-making",
     geography: ["India", "UK", "France", "USA", "UAE", "Turkey", "Saudi Arabia", "Germany"],
   },

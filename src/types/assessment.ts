@@ -34,3 +34,12 @@ export type AssessmentResult = {
   interpretation: ScoreInterpretation;
   valuePropositions: string[];
 };
+
+/** Raw responses held between assessment completion and lead form submit */
+export type PendingAssessment = {
+  track: AssessmentTrack;
+  strategicResponses: AssessmentResponses;
+  operationalResponses?: AssessmentResponses;
+};
+
+export type AssessmentPhase = 'select' | 'assessing' | 'leadCapture' | 'results';

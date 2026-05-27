@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Quantix Strategies — design tokens. shadcn tokens use HSL components (space-separated). */
+/* Quantix Strategies  -  design tokens. shadcn tokens use HSL components (space-separated). */
 
 @layer base {
   :root {
@@ -34,7 +34,7 @@
     --popover: 240 28% 14%;
     --popover-foreground: 40 21% 93%;
 
-    /* Steel blue — CTAs, links, stat numbers, icons */
+    /* Steel blue  -  CTAs, links, stat numbers, icons */
     --primary: 212 49% 43%;
     --primary-foreground: 40 21% 93%;
 
@@ -44,7 +44,7 @@
     --muted: 240 28% 14%;
     --muted-foreground: 210 14% 70%;
 
-    /* Mauve — section accents, rose-tinted hovers (shadcn accent surfaces) */
+    /* Mauve  -  section accents, rose-tinted hovers (shadcn accent surfaces) */
     --accent: 330 31% 45%;
     --accent-foreground: 40 21% 93%;
 

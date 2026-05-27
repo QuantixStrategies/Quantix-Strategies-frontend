@@ -35,7 +35,7 @@ export function AssessmentForm({
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] pb-28 pt-0">
-      {/* Sticky progress header — below navbar (page uses pt-20 on main) */}
+      {/* Sticky progress header  -  below navbar (page uses pt-20 on main) */}
       <div
         className="sticky top-20 z-40 border-b border-[rgba(56,111,164,0.15)] bg-[var(--bg-secondary)]"
         style={{ padding: '14px max(32px, 6vw)' }}
@@ -72,7 +72,7 @@ export function AssessmentForm({
                 }`}
               >
                 <p className="mb-2.5 text-[12px] tracking-[2px] text-[#B8962E]">
-                  {num} ——
+                  {num} -
                 </p>
                 <p className="mb-1.5 text-base font-medium leading-normal text-[var(--text-primary)]">
                   {question.question}

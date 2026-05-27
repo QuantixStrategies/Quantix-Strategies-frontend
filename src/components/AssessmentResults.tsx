@@ -38,7 +38,7 @@ export function AssessmentResults({ result, onRestart }: AssessmentResultsProps)
           {result.interpretation.label}
         </p>
         <p className="mb-8 mt-2 text-[13px] text-[var(--text-muted)]">
-          Score Range: {result.interpretation.range} — {result.interpretation.description}
+          Score Range: {result.interpretation.range}  -  {result.interpretation.description}
         </p>
 
         <div className="w-full">

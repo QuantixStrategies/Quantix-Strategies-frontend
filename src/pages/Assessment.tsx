@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { scrollToTop } from '@/lib/scrollToTop';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { AssessmentForm } from '@/components/AssessmentForm';
+import { AssessmentLeadForm } from '@/components/AssessmentLeadForm';
 import { AssessmentResults } from '@/components/AssessmentResults';
-import { AssessmentTrack, AssessmentResponses, AssessmentResult } from '@/types/assessment';
+import {
+  AssessmentTrack,
+  AssessmentResponses,
+  AssessmentResult,
+  AssessmentPhase,
+  PendingAssessment,
+} from '@/types/assessment';
 import { strategicQuestions, operationalQuestions } from '@/utils/assessmentQuestions';
-import { calculateScore, calculateComprehensiveScore } from '@/utils/assessmentScoring';
 import { Crosshair, Gauge, Layers } from 'lucide-react';
 
 function getFlowTitle(
@@ -24,15 +31,23 @@ function getFlowTitle(
 }
 
 export default function Assessment() {
+  const [phase, setPhase] = useState<AssessmentPhase>('select');
   const [selectedTrack, setSelectedTrack] = useState<AssessmentTrack | null>(null);
-  const [isAssessing, setIsAssessing] = useState(false);
   const [result, setResult] = useState<AssessmentResult | null>(null);
-  const [comprehensiveStep, setComprehensiveStep] = useState<'strategic' | 'operational' | null>(null);
+  const [pendingAssessment, setPendingAssessment] = useState<PendingAssessment | null>(null);
+  const [comprehensiveStep, setComprehensiveStep] = useState<'strategic' | 'operational' | null>(
+    null
+  );
   const [strategicResponses, setStrategicResponses] = useState<AssessmentResponses>({});
+
+  // Long assessment steps leave the user scrolled down — reset on every phase transition
+  useEffect(() => {
+    scrollToTop();
+  }, [phase, comprehensiveStep]);
 
   const startAssessment = (track: AssessmentTrack) => {
     setSelectedTrack(track);
-    setIsAssessing(true);
+    setPhase('assessing');
     if (track === 'comprehensive') {
       setComprehensiveStep('strategic');
     }
@@ -42,26 +57,51 @@ export default function Assessment() {
     if (selectedTrack === 'comprehensive' && comprehensiveStep === 'strategic') {
       setStrategicResponses(responses);
       setComprehensiveStep('operational');
-    } else if (selectedTrack === 'comprehensive' && comprehensiveStep === 'operational') {
-      const comprehensiveResult = calculateComprehensiveScore(strategicResponses, responses);
-      setResult(comprehensiveResult);
-      setIsAssessing(false);
-    } else if (selectedTrack) {
-      const assessmentResult = calculateScore(responses, selectedTrack);
-      setResult(assessmentResult);
-      setIsAssessing(false);
+      return;
     }
+
+    if (!selectedTrack) return;
+
+    let pending: PendingAssessment;
+
+    if (selectedTrack === 'comprehensive' && comprehensiveStep === 'operational') {
+      pending = {
+        track: 'comprehensive',
+        strategicResponses,
+        operationalResponses: responses,
+      };
+    } else if (selectedTrack === 'operational') {
+      pending = {
+        track: 'operational',
+        strategicResponses: {},
+        operationalResponses: responses,
+      };
+    } else {
+      pending = {
+        track: 'strategic',
+        strategicResponses: responses,
+      };
+    }
+
+    setPendingAssessment(pending);
+    setPhase('leadCapture');
+  };
+
+  const handleLeadFormSuccess = (assessmentResult: AssessmentResult) => {
+    setResult(assessmentResult);
+    setPhase('results');
   };
 
   const resetAssessment = () => {
+    setPhase('select');
     setSelectedTrack(null);
-    setIsAssessing(false);
     setResult(null);
+    setPendingAssessment(null);
     setComprehensiveStep(null);
     setStrategicResponses({});
   };
 
-  if (result) {
+  if (phase === 'results' && result) {
     return (
       <div className="animate-fade-in">
         <Navigation />
@@ -73,7 +113,19 @@ export default function Assessment() {
     );
   }
 
-  if (isAssessing && selectedTrack) {
+  if (phase === 'leadCapture' && pendingAssessment) {
+    return (
+      <div className="animate-fade-in">
+        <Navigation />
+        <main className="min-h-screen bg-[var(--bg-primary)] pt-20">
+          <AssessmentLeadForm pending={pendingAssessment} onSuccess={handleLeadFormSuccess} />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (phase === 'assessing' && selectedTrack) {
     const questions =
       selectedTrack === 'strategic' || comprehensiveStep === 'strategic'
         ? strategicQuestions
@@ -141,7 +193,7 @@ export default function Assessment() {
           className="mx-auto grid max-w-[1100px] grid-cols-1 gap-6 px-[max(32px,6vw)] max-[899px]:grid-cols-1 min-[900px]:grid-cols-3"
           style={{ marginTop: '48px' }}
         >
-          {/* Card 1 — Strategic Focus Audit */}
+          {/* Card 1  -  Strategic Focus Audit */}
           <article className="group relative flex flex-col overflow-hidden rounded-xl border border-[rgba(56,111,164,0.15)] bg-[var(--bg-secondary)] px-8 py-9 transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(56,111,164,0.35)] hover:shadow-[0_16px_48px_rgba(56,111,164,0.15)]">
             <div className="absolute left-0 right-0 top-0 h-[3px] bg-[#386FA4]" />
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-[10px] border border-[rgba(56,111,164,0.25)] bg-[rgba(56,111,164,0.1)] text-[#386FA4]">
@@ -174,7 +226,7 @@ export default function Assessment() {
             </button>
           </article>
 
-          {/* Card 2 — Operational Excellence */}
+          {/* Card 2  -  Operational Excellence */}
           <article className="group relative flex flex-col overflow-hidden rounded-xl border border-[rgba(56,111,164,0.15)] bg-[var(--bg-secondary)] px-8 py-9 transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(56,111,164,0.35)] hover:shadow-[0_16px_48px_rgba(56,111,164,0.15)]">
             <div className="absolute left-0 right-0 top-0 h-[3px] bg-[#954F72]" />
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-[10px] border border-[rgba(149,79,114,0.25)] bg-[rgba(149,79,114,0.1)] text-[#954F72]">
@@ -207,7 +259,7 @@ export default function Assessment() {
             </button>
           </article>
 
-          {/* Card 3 — Comprehensive */}
+          {/* Card 3  -  Comprehensive */}
           <article className="group relative flex flex-col overflow-hidden rounded-xl border border-[rgba(56,111,164,0.15)] bg-[var(--bg-secondary)] px-8 py-9 transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(56,111,164,0.35)] hover:shadow-[0_16px_48px_rgba(56,111,164,0.15)]">
             <div className="absolute left-0 right-0 top-0 h-[3px] bg-gradient-to-r from-[#386FA4] to-[#954F72]" />
             <span

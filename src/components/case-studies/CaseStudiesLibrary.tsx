@@ -240,7 +240,7 @@ export default function CaseStudiesLibrary() {
         </h1>
         <div className="my-6 h-0.5 w-14 bg-[#B8962E]" style={{ width: 56, height: 2 }} />
         <p className="max-w-[560px] text-[15px] leading-[1.8] text-[#A8B2BD]">
-          Real-world strategic interventions across industries and organization types — every situation
+          Real-world strategic interventions across industries and organization types  -  every situation
           where the right lens changed the outcome.
         </p>
         <a
