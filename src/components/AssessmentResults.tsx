@@ -27,6 +27,20 @@ export function AssessmentResults({ result, onRestart }: AssessmentResultsProps)
         <p className="mt-2 text-[15px] text-[var(--text-muted)]">{assessmentName}</p>
       </header>
 
+      <div className="mx-auto mb-8 max-w-[680px] rounded-lg border border-[rgba(184,150,46,0.35)] bg-[rgba(184,150,46,0.1)] px-6 py-5 text-center">
+        <p className="text-[15px] leading-relaxed text-[var(--text-primary)]">
+          Thank you! We will get back to you within the next 24 hours. You can also drop your inquiry
+          at{' '}
+          <a
+            href="mailto:inquiries@quantixstrategies.com"
+            className="text-[#386FA4] underline underline-offset-2 transition-colors hover:text-[#954F72]"
+          >
+            inquiries@quantixstrategies.com
+          </a>
+          .
+        </p>
+      </div>
+
       {/* Score card */}
       <div
         className="mx-auto mb-10 max-w-[680px] rounded-xl border border-[rgba(184,150,46,0.25)] border-t-4 border-t-[#B8962E] bg-[var(--bg-secondary)] px-6 py-8 text-center sm:px-[52px] sm:py-12"

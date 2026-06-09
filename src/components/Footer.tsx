@@ -21,7 +21,7 @@ const Footer = () => {
               />
             </Link>
             <p className="text-sm text-muted-foreground">
-              Offshore consulting for family offices and institutional investors worldwide
+              Fractional Chief Strategy Offices for Family Offices, Founders, Institutional Investors across the Globe
             </p>
           </div>
 
@@ -77,7 +77,7 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4 text-gold">Contact</h4>
             <ul className="space-y-2">
-              <li className="text-sm text-muted-foreground">info@quantixstrategies.com</li>
+              <li className="text-sm text-muted-foreground">inquiries@quantixstrategies.com</li>
               <li className="text-sm text-muted-foreground">Confidential inquiries welcome</li>
             </ul>
           </div>

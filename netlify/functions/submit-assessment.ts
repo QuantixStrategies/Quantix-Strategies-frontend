@@ -199,14 +199,21 @@ export const handler: Handler = async (event) => {
     return jsonResponse(400, { error: 'Missing or invalid submission data' });
   }
 
+  await trySendNotificationEmail(payload);
+  return jsonResponse(200, { success: true });
+};
+
+async function trySendNotificationEmail(payload: SubmissionPayload): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
-  const notifyEmail = process.env.ASSESSMENT_NOTIFY_EMAIL ?? 'info@quantixstrategies.com';
+  const notifyEmail = process.env.ASSESSMENT_NOTIFY_EMAIL ?? 'inquiries@quantixstrategies.com';
   const fromEmail =
     process.env.ASSESSMENT_FROM_EMAIL ?? 'onboarding@resend.dev';
 
   if (!apiKey) {
-    console.error('RESEND_API_KEY is not configured');
-    return jsonResponse(500, { error: 'Email service is not configured' });
+    console.warn(
+      'RESEND_API_KEY is not configured — submission accepted but notification email skipped'
+    );
+    return;
   }
 
   const trackLabel = TRACK_LABELS[payload.assessment.track] ?? payload.assessment.track;
@@ -226,12 +233,8 @@ export const handler: Handler = async (event) => {
 
     if (error) {
       console.error('Resend error:', error);
-      return jsonResponse(500, { error: 'Failed to send notification email' });
     }
-
-    return jsonResponse(200, { success: true });
   } catch (err) {
     console.error('Email send failed:', err);
-    return jsonResponse(500, { error: 'Failed to send notification email' });
   }
-};
+}
