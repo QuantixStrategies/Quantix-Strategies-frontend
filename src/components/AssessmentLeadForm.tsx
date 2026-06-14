@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
@@ -28,12 +29,11 @@ import {
 import type { PendingAssessment } from '@/types/assessment';
 import { leadCaptureSchema, type LeadCaptureFormData } from '@/types/leadCapture';
 import { buildAssessmentSubmission } from '@/utils/formatAssessmentSubmission';
-import { submitAssessment } from '@/lib/submitAssessment';
-import type { AssessmentResult } from '@/types/assessment';
+import { submitAssessment, AssessmentSubmitError } from '@/lib/submitAssessment';
 
 interface AssessmentLeadFormProps {
   pending: PendingAssessment;
-  onSuccess: (result: AssessmentResult) => void;
+  onSuccess: (email: string) => void;
 }
 
 const selectTriggerClass =
@@ -43,6 +43,8 @@ const inputClass =
   'border-[rgba(56,111,164,0.25)] bg-[var(--bg-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]';
 
 export function AssessmentLeadForm({ pending, onSuccess }: AssessmentLeadFormProps) {
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const form = useForm<LeadCaptureFormData>({
     resolver: zodResolver(leadCaptureSchema),
     defaultValues: {
@@ -64,14 +66,19 @@ export function AssessmentLeadForm({ pending, onSuccess }: AssessmentLeadFormPro
   const onSubmit = async (data: LeadCaptureFormData) => {
     if (data.website) return;
 
+    setSubmitError(null);
     const payload = buildAssessmentSubmission(data, pending);
 
-    // Notify the team in the background — never block the user from seeing results
-    void submitAssessment(payload).catch(() => {
-      console.warn('Assessment notification could not be sent');
-    });
-
-    onSuccess(payload.assessment.result);
+    try {
+      await submitAssessment(payload);
+      onSuccess(data.email);
+    } catch (err) {
+      const message =
+        err instanceof AssessmentSubmitError
+          ? err.message
+          : 'Unable to submit your details. Please try again.';
+      setSubmitError(message);
+    }
   };
 
   return (
@@ -303,6 +310,12 @@ export function AssessmentLeadForm({ pending, onSuccess }: AssessmentLeadFormPro
               )}
             />
 
+            {submitError ? (
+              <p className="rounded-md border border-[rgba(149,79,114,0.4)] bg-[rgba(149,79,114,0.1)] px-4 py-3 text-sm text-[var(--text-primary)]">
+                {submitError}
+              </p>
+            ) : null}
+
             <button
               type="submit"
               disabled={isSubmitting}
@@ -314,7 +327,7 @@ export function AssessmentLeadForm({ pending, onSuccess }: AssessmentLeadFormPro
                   Submitting…
                 </>
               ) : (
-                'View My Results'
+                'Submit Assessment'
               )}
             </button>
           </form>

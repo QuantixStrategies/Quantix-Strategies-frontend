@@ -7,14 +7,12 @@ import type {
 } from '@/types/assessment';
 import type { AssessmentSubmissionPayload, LeadCaptureFormData, ResponseDetail } from '@/types/leadCapture';
 import { calculateComprehensiveScore, calculateScore } from '@/utils/assessmentScoring';
-import { operationalQuestions, strategicQuestions } from '@/utils/assessmentQuestions';
+import { getQuestionById, operationalQuestions, strategicQuestions } from '@/utils/assessmentQuestions';
 
 function formatAnswer(question: Question, value: number | undefined): string {
   if (value === undefined) return 'Not answered';
-  if (question.type === 'binary') {
-    return value === 1 ? 'Yes' : 'No';
-  }
-  return `${value}/5`;
+  const option = question.options.find((o) => o.value === value);
+  return option?.label ?? String(value);
 }
 
 function buildResponseDetails(
@@ -24,7 +22,7 @@ function buildResponseDetails(
 ): ResponseDetail[] {
   return questions.map((q) => ({
     section,
-    question: q.question,
+    question: `${q.title}: ${q.subtitle}`,
     answer: formatAnswer(q, responses[q.id]),
   }));
 }
@@ -119,12 +117,21 @@ export function formatSubmissionPlainText(payload: AssessmentSubmissionPayload):
     'ASSESSMENT RESULTS',
     `Track: ${getTrackDisplayName(assessment.track)}`,
     `Score: ${assessment.result.score}`,
+    `Score Label: ${assessment.result.scoreLabel}`,
     `Interpretation: ${assessment.result.interpretation.label}`,
     `Range: ${assessment.result.interpretation.range}`,
     `Recommended Action: ${assessment.result.interpretation.action}`,
+    `Strategic Component: ${assessment.result.strategicScore}`,
+    `Operational Component: ${assessment.result.operationalScore}`,
     '',
-    'VALUE PROPOSITIONS',
-    ...assessment.result.valuePropositions.map((p, i) => `${i + 1}. ${p}`),
+    'STRATEGIC VALUE PROPOSITIONS',
+    ...assessment.result.strategicValuePropositions.map((p, i) => `${i + 1}. ${p}`),
+    '',
+    'OPERATIONAL VALUE PROPOSITIONS',
+    ...assessment.result.operationalValuePropositions.map((p, i) => `${i + 1}. ${p}`),
+    '',
+    'CUMULATIVE ROADMAP',
+    ...assessment.result.cumulativeRoadmap.map((p, i) => `${i + 1}. ${p}`),
     '',
     'ASSESSMENT RESPONSES',
   ];
@@ -142,4 +149,9 @@ export function formatSubmissionPlainText(payload: AssessmentSubmissionPayload):
 
   lines.push(`Submitted at: ${submittedAt}`);
   return lines.join('\n');
+}
+
+/** Resolve question metadata for a response id (used by tests and tooling) */
+export function getQuestionForResponseId(id: string): Question | undefined {
+  return getQuestionById(id);
 }

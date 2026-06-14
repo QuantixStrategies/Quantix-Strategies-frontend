@@ -1,15 +1,23 @@
-export type ScaledQuestion = {
-  id: string;
-  question: string;
-  type: 'scaled';
-  scale: number[];
-  labels?: { min: string; max: string };
+export type QuestionOption = {
+  value: number;
+  label: string;
 };
 
-export type BinaryQuestion = {
+type QuestionBase = {
   id: string;
-  question: string;
+  title: string;
+  subtitle: string;
+  section: string;
+};
+
+export type ScaledQuestion = QuestionBase & {
+  type: 'scaled';
+  options: QuestionOption[];
+};
+
+export type BinaryQuestion = QuestionBase & {
   type: 'binary';
+  options: QuestionOption[];
 };
 
 export type Question = ScaledQuestion | BinaryQuestion;
@@ -25,14 +33,23 @@ export type ScoreInterpretation = {
   label: string;
   description: string;
   action: string;
-  roiRange?: string;
+  recommendations: string;
+  bandColor: string;
 };
 
 export type AssessmentResult = {
   track: AssessmentTrack;
   score: number;
+  scoreLabel: string;
   interpretation: ScoreInterpretation;
+  strategicScore: number;
+  operationalScore: number;
+  strategicValuePropositions: string[];
+  operationalValuePropositions: string[];
+  /** Flat list for email/submission compatibility */
   valuePropositions: string[];
+  cumulativeRoadmap: string[];
+  chartInsight: string;
 };
 
 /** Raw responses held between assessment completion and lead form submit */

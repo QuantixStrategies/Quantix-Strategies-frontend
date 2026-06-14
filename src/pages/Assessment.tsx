@@ -4,11 +4,10 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { AssessmentForm } from '@/components/AssessmentForm';
 import { AssessmentLeadForm } from '@/components/AssessmentLeadForm';
-import { AssessmentResults } from '@/components/AssessmentResults';
+import { AssessmentCompletion } from '@/components/AssessmentCompletion';
 import {
   AssessmentTrack,
   AssessmentResponses,
-  AssessmentResult,
   AssessmentPhase,
   PendingAssessment,
 } from '@/types/assessment';
@@ -33,7 +32,7 @@ function getFlowTitle(
 export default function Assessment() {
   const [phase, setPhase] = useState<AssessmentPhase>('select');
   const [selectedTrack, setSelectedTrack] = useState<AssessmentTrack | null>(null);
-  const [result, setResult] = useState<AssessmentResult | null>(null);
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
   const [pendingAssessment, setPendingAssessment] = useState<PendingAssessment | null>(null);
   const [comprehensiveStep, setComprehensiveStep] = useState<'strategic' | 'operational' | null>(
     null
@@ -87,26 +86,26 @@ export default function Assessment() {
     setPhase('leadCapture');
   };
 
-  const handleLeadFormSuccess = (assessmentResult: AssessmentResult) => {
-    setResult(assessmentResult);
+  const handleLeadFormSuccess = (email: string) => {
+    setSubmittedEmail(email);
     setPhase('results');
   };
 
   const resetAssessment = () => {
     setPhase('select');
     setSelectedTrack(null);
-    setResult(null);
+    setSubmittedEmail(null);
     setPendingAssessment(null);
     setComprehensiveStep(null);
     setStrategicResponses({});
   };
 
-  if (phase === 'results' && result) {
+  if (phase === 'results') {
     return (
       <div className="animate-fade-in">
         <Navigation />
         <main className="min-h-screen bg-[var(--bg-primary)] pt-20">
-          <AssessmentResults result={result} onRestart={resetAssessment} />
+          <AssessmentCompletion email={submittedEmail ?? undefined} onRestart={resetAssessment} />
         </main>
         <Footer />
       </div>
@@ -241,7 +240,7 @@ export default function Assessment() {
               management
             </p>
             <div className="mb-7 flex flex-wrap gap-2">
-              {['7 scaled questions', '4 binary questions', '10-15 minutes'].map((pill) => (
+              {['7 scaled questions', '4 binary questions', '11 questions', '10-15 minutes'].map((pill) => (
                 <span
                   key={pill}
                   className="rounded-full border border-[rgba(56,111,164,0.2)] bg-[rgba(56,111,164,0.08)] px-3 py-1 text-[11px] tracking-wide text-[var(--text-muted)]"

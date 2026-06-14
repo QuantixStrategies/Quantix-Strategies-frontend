@@ -7,6 +7,28 @@ type ResponseDetail = {
   answer: string;
 };
 
+type ScoreInterpretation = {
+  range: string;
+  label: string;
+  description: string;
+  action: string;
+  recommendations?: string;
+  bandColor?: string;
+};
+
+type AssessmentResult = {
+  score: number;
+  scoreLabel?: string;
+  interpretation: ScoreInterpretation;
+  strategicScore?: number;
+  operationalScore?: number;
+  strategicValuePropositions?: string[];
+  operationalValuePropositions?: string[];
+  valuePropositions: string[];
+  cumulativeRoadmap?: string[];
+  chartInsight?: string;
+};
+
 type SubmissionPayload = {
   website?: string;
   lead: {
@@ -22,16 +44,7 @@ type SubmissionPayload = {
   };
   assessment: {
     track: string;
-    result: {
-      score: number;
-      interpretation: {
-        label: string;
-        range: string;
-        description: string;
-        action: string;
-      };
-      valuePropositions: string[];
-    };
+    result: AssessmentResult;
     responseDetails: ResponseDetail[];
   };
   submittedAt: string;
@@ -65,14 +78,15 @@ function escapeHtml(text: string): string {
     .replace(/"/g, '&quot;');
 }
 
-function buildEmailHtml(payload: SubmissionPayload): string {
+function listItems(items: string[] | undefined): string {
+  if (!items?.length) return '<p style="font-size:13px;color:#666;">None</p>';
+  return `<ul style="font-size:13px;padding-left:20px;margin:0;">${items.map((p) => `<li>${escapeHtml(p)}</li>`).join('')}</ul>`;
+}
+
+function buildTeamEmailHtml(payload: SubmissionPayload): string {
   const { lead, assessment, submittedAt } = payload;
   const trackLabel = TRACK_LABELS[assessment.track] ?? assessment.track;
   const { result } = assessment;
-
-  const valuePropsHtml = result.valuePropositions
-    .map((p) => `<li>${escapeHtml(p)}</li>`)
-    .join('');
 
   let responsesHtml = '';
   let currentSection: string | undefined;
@@ -87,6 +101,8 @@ function buildEmailHtml(payload: SubmissionPayload): string {
         <p style="margin:0;font-size:13px;"><strong>A:</strong> ${escapeHtml(detail.answer)}</p>
       </div>`;
   }
+
+  const scoreLabel = result.scoreLabel ?? trackLabel;
 
   return `
 <!DOCTYPE html>
@@ -114,13 +130,23 @@ function buildEmailHtml(payload: SubmissionPayload): string {
   <div style="background:#0D1B2A;color:#fff;padding:20px;border-radius:8px;text-align:center;margin:12px 0;">
     <div style="font-size:48px;color:#B8962E;font-weight:normal;">${result.score}</div>
     <div style="font-size:16px;margin-top:8px;">${escapeHtml(result.interpretation.label)}</div>
-    <div style="font-size:12px;color:#aaa;margin-top:4px;">${escapeHtml(trackLabel)} · Range ${escapeHtml(result.interpretation.range)}</div>
+    <div style="font-size:12px;color:#aaa;margin-top:4px;">${escapeHtml(scoreLabel)} · Range ${escapeHtml(result.interpretation.range)}</div>
   </div>
+  <p style="font-size:14px;"><strong>Strategic Component:</strong> ${result.strategicScore ?? 'N/A'}%</p>
+  <p style="font-size:14px;"><strong>Operational Component:</strong> ${result.operationalScore ?? 'N/A'}%</p>
   <p style="font-size:14px;"><strong>Recommended Action:</strong> ${escapeHtml(result.interpretation.action)}</p>
   <p style="font-size:13px;color:#666;">${escapeHtml(result.interpretation.description)}</p>
+  ${result.interpretation.recommendations ? `<p style="font-size:13px;"><strong>Recommendations:</strong> ${escapeHtml(result.interpretation.recommendations)}</p>` : ''}
+  ${result.chartInsight ? `<p style="font-size:13px;color:#666;"><strong>Chart Insight:</strong> ${escapeHtml(result.chartInsight)}</p>` : ''}
 
-  <h3 style="color:#386FA4;font-size:14px;">Value Propositions</h3>
-  <ul style="font-size:13px;padding-left:20px;">${valuePropsHtml}</ul>
+  <h3 style="color:#386FA4;font-size:14px;margin-top:20px;">Strategic Value Propositions</h3>
+  ${listItems(result.strategicValuePropositions)}
+
+  <h3 style="color:#386FA4;font-size:14px;margin-top:16px;">Operational Value Propositions</h3>
+  ${listItems(result.operationalValuePropositions)}
+
+  <h3 style="color:#386FA4;font-size:14px;margin-top:16px;">Cumulative Roadmap</h3>
+  ${listItems(result.cumulativeRoadmap)}
 
   <h2 style="color:#386FA4;font-size:16px;margin-top:28px;">Assessment Responses</h2>
   ${responsesHtml}
@@ -128,9 +154,10 @@ function buildEmailHtml(payload: SubmissionPayload): string {
 </html>`;
 }
 
-function buildPlainText(payload: SubmissionPayload): string {
+function buildTeamPlainText(payload: SubmissionPayload): string {
   const { lead, assessment, submittedAt } = payload;
   const trackLabel = TRACK_LABELS[assessment.track] ?? assessment.track;
+  const { result } = assessment;
   const lines = [
     'NEW ASSESSMENT LEAD',
     '',
@@ -145,9 +172,21 @@ function buildPlainText(payload: SubmissionPayload): string {
     `Description: ${lead.businessDescription}`,
     '',
     `Track: ${trackLabel}`,
-    `Score: ${assessment.result.score}`,
-    `Interpretation: ${assessment.result.interpretation.label}`,
-    `Action: ${assessment.result.interpretation.action}`,
+    `Score: ${result.score}`,
+    `Score Label: ${result.scoreLabel ?? trackLabel}`,
+    `Interpretation: ${result.interpretation.label}`,
+    `Strategic Component: ${result.strategicScore ?? 'N/A'}`,
+    `Operational Component: ${result.operationalScore ?? 'N/A'}`,
+    `Action: ${result.interpretation.action}`,
+    '',
+    'Strategic Value Propositions:',
+    ...(result.strategicValuePropositions ?? []).map((p) => `- ${p}`),
+    '',
+    'Operational Value Propositions:',
+    ...(result.operationalValuePropositions ?? []).map((p) => `- ${p}`),
+    '',
+    'Cumulative Roadmap:',
+    ...(result.cumulativeRoadmap ?? []).map((p) => `- ${p}`),
     '',
     'Responses:',
   ];
@@ -160,6 +199,51 @@ function buildPlainText(payload: SubmissionPayload): string {
 
   lines.push(`\nSubmitted: ${submittedAt}`);
   return lines.join('\n');
+}
+
+function buildUserConfirmationHtml(
+  name: string,
+  websiteUrl: string,
+  linkedinUrl: string
+): string {
+  return `
+<!DOCTYPE html>
+<html>
+<body style="font-family:Georgia,serif;color:#0D1B2A;max-width:560px;margin:0 auto;padding:32px 24px;line-height:1.7;">
+  <p style="font-size:16px;">Hi ${escapeHtml(name)},</p>
+  <p style="font-size:15px;">
+    Thank you for taking Quantix Strategies' Leader Bandwidth Audit. We shall get back to you with your scores and curated recommendations, within the next 48 hours.
+  </p>
+  <p style="font-size:15px;">
+    In the meantime, please check out our
+    <a href="${escapeHtml(websiteUrl)}" style="color:#386FA4;">Website</a>
+    and
+    <a href="${escapeHtml(linkedinUrl)}" style="color:#386FA4;">LinkedIn</a>.
+  </p>
+  <p style="font-size:15px;">Let's build something credible together!</p>
+  <p style="font-size:15px;margin-top:32px;">
+    Quantix Strategies<br>
+    <em style="color:#666;">Turning Data into Direction</em>
+  </p>
+</body>
+</html>`;
+}
+
+function buildUserConfirmationText(
+  name: string,
+  websiteUrl: string,
+  linkedinUrl: string
+): string {
+  return `Hi ${name},
+
+Thank you for taking Quantix Strategies' Leader Bandwidth Audit. We shall get back to you with your scores and curated recommendations, within the next 48 hours.
+
+In the meantime, please check out our Website ${websiteUrl} and LinkedIn ${linkedinUrl}.
+
+Let's build something credible together!
+
+Quantix Strategies
+Turning Data into Direction`;
 }
 
 function isValidPayload(body: unknown): body is SubmissionPayload {
@@ -199,42 +283,59 @@ export const handler: Handler = async (event) => {
     return jsonResponse(400, { error: 'Missing or invalid submission data' });
   }
 
-  await trySendNotificationEmail(payload);
-  return jsonResponse(200, { success: true });
+  try {
+    await sendAssessmentEmails(payload);
+    return jsonResponse(200, { success: true });
+  } catch (err) {
+    console.error('Assessment email delivery failed:', err);
+    return jsonResponse(500, {
+      error: 'Unable to send your assessment. Please try again or contact inquiries@quantixstrategies.com.',
+    });
+  }
 };
 
-async function trySendNotificationEmail(payload: SubmissionPayload): Promise<void> {
+async function sendAssessmentEmails(payload: SubmissionPayload): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const notifyEmail = process.env.ASSESSMENT_NOTIFY_EMAIL ?? 'inquiries@quantixstrategies.com';
-  const fromEmail =
-    process.env.ASSESSMENT_FROM_EMAIL ?? 'onboarding@resend.dev';
+  const fromEmail = process.env.ASSESSMENT_FROM_EMAIL ?? 'onboarding@resend.dev';
+  const websiteUrl = process.env.QUANTIX_WEBSITE_URL ?? 'https://www.quantixstrategies.com';
+  const linkedinUrl =
+    process.env.QUANTIX_LINKEDIN_URL ?? 'https://www.linkedin.com/company/quantix-strategies';
 
   if (!apiKey) {
     console.warn(
-      'RESEND_API_KEY is not configured — submission accepted but notification email skipped'
+      'RESEND_API_KEY is not configured — submission accepted but emails skipped'
     );
     return;
   }
 
-  const trackLabel = TRACK_LABELS[payload.assessment.track] ?? payload.assessment.track;
-  const subject = `New Assessment Lead — ${payload.lead.businessName} (${trackLabel}) — Score ${payload.assessment.result.score}`;
-
   const resend = new Resend(apiKey);
+  const trackLabel = TRACK_LABELS[payload.assessment.track] ?? payload.assessment.track;
+  const teamSubject = `New Assessment Lead — ${payload.lead.businessName} (${trackLabel}) — Score ${payload.assessment.result.score}`;
 
-  try {
-    const { error } = await resend.emails.send({
-      from: fromEmail,
-      to: [notifyEmail],
-      replyTo: payload.lead.email,
-      subject,
-      html: buildEmailHtml(payload),
-      text: buildPlainText(payload),
-    });
+  const teamResult = await resend.emails.send({
+    from: fromEmail,
+    to: [notifyEmail],
+    replyTo: payload.lead.email,
+    subject: teamSubject,
+    html: buildTeamEmailHtml(payload),
+    text: buildTeamPlainText(payload),
+  });
 
-    if (error) {
-      console.error('Resend error:', error);
-    }
-  } catch (err) {
-    console.error('Email send failed:', err);
+  if (teamResult.error) {
+    throw new Error(`Team notification failed: ${teamResult.error.message}`);
+  }
+
+  const userResult = await resend.emails.send({
+    from: fromEmail,
+    to: [payload.lead.email],
+    replyTo: notifyEmail,
+    subject: 'Thank you for completing the Leader Bandwidth Audit',
+    html: buildUserConfirmationHtml(payload.lead.name, websiteUrl, linkedinUrl),
+    text: buildUserConfirmationText(payload.lead.name, websiteUrl, linkedinUrl),
+  });
+
+  if (userResult.error) {
+    console.error('User confirmation email failed:', userResult.error);
   }
 }

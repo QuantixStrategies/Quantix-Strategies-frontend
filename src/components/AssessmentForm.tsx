@@ -33,15 +33,16 @@ export function AssessmentForm({
   const progress = (answeredCount / questions.length) * 100;
   const allAnswered = answeredCount === questions.length;
 
+  let lastSection: string | null = null;
+
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] pb-28 pt-0">
-      {/* Sticky progress header  -  below navbar (page uses pt-20 on main) */}
       <div
         className="sticky top-20 z-40 border-b border-[rgba(56,111,164,0.15)] bg-[var(--bg-secondary)]"
         style={{ padding: '14px max(32px, 6vw)' }}
       >
         <div className="mx-auto flex max-w-[1100px] items-center justify-between gap-4">
-          <p className="hidden min-[640px]:block min-w-0 shrink text-[12px] tracking-wide text-[var(--text-muted)]">
+          <p className="hidden min-w-0 shrink text-[12px] tracking-wide text-[var(--text-muted)] min-[640px]:block">
             {flowTitle}
           </p>
           <div className="h-1 min-h-[4px] w-full min-w-[120px] flex-1 rounded bg-[rgba(56,111,164,0.15)] min-[640px]:w-[40%]">
@@ -50,7 +51,7 @@ export function AssessmentForm({
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="hidden min-[640px]:block shrink-0 text-[12px] tracking-wide text-[#386FA4]">
+          <p className="hidden shrink-0 text-[12px] tracking-wide text-[#386FA4] min-[640px]:block">
             {answeredCount} of {questions.length} questions answered
           </p>
         </div>
@@ -61,86 +62,71 @@ export function AssessmentForm({
           {questions.map((question, index) => {
             const num = String(index + 1).padStart(2, '0');
             const answered = responses[question.id] !== undefined;
+            const showSection = question.section !== lastSection;
+            if (showSection) lastSection = question.section;
 
             return (
-              <div
-                key={question.id}
-                className={`rounded-[10px] border bg-[var(--bg-secondary)] p-8 transition-[border-color] duration-200 sm:px-9 ${
-                  answered
-                    ? 'border-[rgba(56,111,164,0.4)]'
-                    : 'border-[rgba(56,111,164,0.12)]'
-                }`}
-              >
-                <p className="mb-2.5 text-[12px] tracking-[2px] text-[#B8962E]">
-                  {num} -
-                </p>
-                <p className="mb-1.5 text-base font-medium leading-normal text-[var(--text-primary)]">
-                  {question.question}
-                </p>
-                {question.type === 'scaled' && question.labels && (
-                  <p className="mb-6 text-[12px] text-[var(--text-muted)]">
-                    {question.labels.min} → {question.labels.max}
-                  </p>
+              <div key={question.id}>
+                {showSection && (
+                  <div className="mb-5 mt-8 first:mt-0 rounded-lg bg-[#0D1B2A] px-5 py-4 text-[15px] font-semibold text-[var(--text-primary)] border border-[rgba(56,111,164,0.25)]">
+                    {question.section}
+                  </div>
                 )}
-                {question.type === 'scaled' ? (
-                  <div className="flex gap-2.5 max-[639px]:grid max-[639px]:grid-cols-3 max-[639px]:gap-2.5">
-                    {question.scale.map((value) => {
-                      const selected = responses[question.id] === value;
+
+                <div
+                  className={`rounded-[10px] border bg-[var(--bg-secondary)] p-8 transition-[border-color] duration-200 sm:px-9 ${
+                    answered
+                      ? 'border-[rgba(56,111,164,0.4)]'
+                      : 'border-[rgba(56,111,164,0.12)]'
+                  }`}
+                >
+                  <p className="mb-2.5 text-[12px] tracking-[2px] text-[#B8962E]">{num} -</p>
+                  <p className="mb-1.5 text-base font-semibold leading-normal text-[var(--text-primary)]">
+                    {question.title}
+                  </p>
+                  <p className="mb-6 text-[13px] leading-relaxed text-[var(--text-muted)]">
+                    {question.subtitle}
+                  </p>
+
+                  <div className="flex flex-col gap-2.5">
+                    {question.options.map((option) => {
+                      const selected = responses[question.id] === option.value;
                       return (
                         <button
-                          key={value}
+                          key={option.value}
                           type="button"
-                          onClick={() => handleResponse(question.id, value)}
-                          className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-lg border px-2 py-3.5 transition-all duration-200 max-[639px]:min-h-[52px] max-[639px]:w-full ${
+                          onClick={() => handleResponse(question.id, option.value)}
+                          className={`w-full rounded-lg border px-4 py-3.5 text-left text-[13px] leading-snug transition-all duration-200 ${
                             selected
-                              ? 'border-2 border-[#386FA4] bg-[rgba(56,111,164,0.15)]'
-                              : 'border border-[rgba(56,111,164,0.2)] bg-[rgba(13,27,42,0.6)] hover:border-[#386FA4] hover:bg-[rgba(56,111,164,0.1)]'
+                              ? question.type === 'binary' && option.value === 0
+                                ? 'border-2 border-[#954F72] bg-[rgba(149,79,114,0.1)] text-[var(--text-primary)]'
+                                : 'border-2 border-[#386FA4] bg-[rgba(56,111,164,0.15)] text-[var(--text-primary)]'
+                              : 'border border-[rgba(56,111,164,0.2)] bg-[rgba(13,27,42,0.6)] text-[var(--text-muted)] hover:border-[#386FA4] hover:bg-[rgba(56,111,164,0.1)] hover:text-[var(--text-primary)]'
                           }`}
                         >
-                          <span
-                            className={`text-lg font-semibold ${
-                              selected ? 'text-[#386FA4]' : 'text-[var(--text-primary)]'
-                            }`}
-                          >
-                            {value}
-                          </span>
+                          {question.type === 'scaled' && (
+                            <span
+                              className={`mr-2 inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold ${
+                                selected
+                                  ? 'bg-[#386FA4] text-white'
+                                  : 'bg-[rgba(56,111,164,0.2)] text-[var(--text-muted)]'
+                              }`}
+                            >
+                              {option.value}
+                            </span>
+                          )}
+                          {option.label}
                         </button>
                       );
                     })}
                   </div>
-                ) : (
-                  <div className="mt-6 flex gap-3">
-                    <button
-                      type="button"
-                      onClick={() => handleResponse(question.id, 1)}
-                      className={`flex-1 rounded-lg border px-4 py-3.5 text-center text-base font-medium transition-all duration-200 ${
-                        responses[question.id] === 1
-                          ? 'border-2 border-[#386FA4] bg-[rgba(56,111,164,0.15)] text-[var(--text-primary)]'
-                          : 'border border-[rgba(56,111,164,0.2)] bg-[rgba(13,27,42,0.6)] text-[var(--text-primary)] hover:border-[#386FA4] hover:bg-[rgba(56,111,164,0.1)]'
-                      }`}
-                    >
-                      Yes
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleResponse(question.id, 0)}
-                      className={`flex-1 rounded-lg border px-4 py-3.5 text-center text-base font-medium transition-all duration-200 ${
-                        responses[question.id] === 0
-                          ? 'border-2 border-[#954F72] bg-[rgba(149,79,114,0.1)] text-[var(--text-primary)]'
-                          : 'border border-[rgba(56,111,164,0.2)] bg-[rgba(13,27,42,0.6)] text-[var(--text-primary)] hover:border-[#954F72] hover:bg-[rgba(149,79,114,0.08)]'
-                      }`}
-                    >
-                      No
-                    </button>
-                  </div>
-                )}
+                </div>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Fixed bottom bar */}
       <div
         className="fixed bottom-0 left-0 right-0 z-50 border-t border-[rgba(56,111,164,0.15)] bg-[var(--bg-secondary)]"
         style={{ padding: '16px max(32px, 6vw)' }}
