@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:resend": "npx tsx scripts/test-resend-workflow.ts"
+    "test:resend": "npx tsx scripts/test-resend-workflow.ts",
+    "test:production": "npx tsx scripts/test-production-submit.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
