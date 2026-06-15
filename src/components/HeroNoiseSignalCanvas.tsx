@@ -1,12 +1,7 @@
 import { useEffect, useRef } from "react";
+import { getHeroCanvasPerf } from "@/lib/heroCanvasPerf";
 
-const N = 300;
-const STREAM_COUNT = 8;
-const GLYPH_COUNT = 64;
-const FRAME_MS = 1000 / 60;
 const MORPH_DURATION = 4;
-const PULSE_INTERVAL = 3;
-const BOLT_INTERVAL = 1.9;
 
 const COL_ROSE = { r: 149, g: 79, b: 114 };
 const COL_BLUE = { r: 56, g: 111, b: 164 };
@@ -53,8 +48,8 @@ function noiseField(x: number, y: number, t: number) {
   );
 }
 
-function streamY(x: number, stream: number, h: number, phase: number) {
-  const lane = h * (0.16 + stream * (0.68 / STREAM_COUNT));
+function streamY(x: number, stream: number, h: number, phase: number, streamCount: number) {
+  const lane = h * (0.16 + stream * (0.68 / streamCount));
   return lane + Math.sin(x * 0.0065 + phase * 1.4 + stream * 1.1) * h * 0.075;
 }
 
@@ -70,12 +65,15 @@ export function HeroNoiseSignalCanvas() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const perf = getHeroCanvasPerf();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const section = container.closest("section");
 
     let w = 0;
     let h = 0;
     let dpr = 1;
+    let visible = !document.hidden;
+    let inView = true;
     const particles: Particle[] = [];
     const noiseSegments: NoiseSegment[] = [];
     const pulses: PulseRing[] = [];
@@ -98,7 +96,7 @@ export function HeroNoiseSignalCanvas() {
 
     function makeGlyphs() {
       glyphs.length = 0;
-      for (let i = 0; i < GLYPH_COUNT; i++) {
+      for (let i = 0; i < perf.glyphCount; i++) {
         glyphs.push({
           x: Math.random() * w * 0.5,
           y: Math.random() * h,
@@ -111,8 +109,8 @@ export function HeroNoiseSignalCanvas() {
 
     function makeNoiseSegments() {
       noiseSegments.length = 0;
-      const count = Math.floor(120 * (w / 1200));
-      for (let i = 0; i < Math.max(count, 60); i++) {
+      const count = Math.floor(perf.noiseSegmentMax * (w / 1200));
+      for (let i = 0; i < Math.max(count, Math.floor(perf.noiseSegmentMax * 0.4)); i++) {
         noiseSegments.push({
           nx: Math.random() * w * 0.42,
           ny: Math.random() * h,
@@ -126,7 +124,7 @@ export function HeroNoiseSignalCanvas() {
 
     function makeParticles() {
       particles.length = 0;
-      for (let i = 0; i < N; i++) {
+      for (let i = 0; i < perf.particleCount; i++) {
         particles.push({
           x: Math.random() * w * 0.45,
           y: Math.random() * h,
@@ -138,7 +136,7 @@ export function HeroNoiseSignalCanvas() {
           phase: Math.random() * Math.PI * 2,
           seed: Math.random() * 10000,
           roseBias: Math.random(),
-          stream: i % STREAM_COUNT,
+          stream: i % perf.streamCount,
         });
       }
     }
@@ -147,7 +145,7 @@ export function HeroNoiseSignalCanvas() {
       const cw = container.clientWidth;
       const ch = container.clientHeight;
       if (cw < 1 || ch < 1) return;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, perf.maxDpr);
       w = cw;
       h = ch;
       canvas.width = Math.floor(w * dpr);
@@ -169,13 +167,21 @@ export function HeroNoiseSignalCanvas() {
       }
     }
 
-    const onMouseMove = (e: MouseEvent) => {
+    const setPointer = (clientX: number, clientY: number) => {
       if (!section) return;
       const rect = section.getBoundingClientRect();
-      mouseX = (e.clientX - rect.left) / rect.width;
-      mouseY = (e.clientY - rect.top) / rect.height;
-      mousePxX = e.clientX - rect.left;
-      mousePxY = e.clientY - rect.top;
+      mouseX = (clientX - rect.left) / rect.width;
+      mouseY = (clientY - rect.top) / rect.height;
+      mousePxX = clientX - rect.left;
+      mousePxY = clientY - rect.top;
+    };
+
+    const onMouseMove = (e: MouseEvent) => setPointer(e.clientX, e.clientY);
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        setPointer(e.touches[0].clientX, e.touches[0].clientY);
+      }
     };
 
     const onClick = (e: MouseEvent) => {
@@ -186,8 +192,10 @@ export function HeroNoiseSignalCanvas() {
       bursts.push({ x, y, born: time });
       pulses.push({ born: time, speed: 120 + Math.random() * 60, x, y });
       if (bursts.length > 8) bursts.shift();
-      for (let i = 0; i < 12; i++) {
-        const p = particles[Math.floor(Math.random() * N)];
+      const kick = perf.particleCount > 100 ? 12 : 5;
+      for (let i = 0; i < kick; i++) {
+        const p = particles[Math.floor(Math.random() * particles.length)];
+        if (!p) continue;
         const ang = Math.random() * Math.PI * 2;
         const force = 2 + Math.random() * 4;
         p.vx += Math.cos(ang) * force;
@@ -195,20 +203,35 @@ export function HeroNoiseSignalCanvas() {
       }
     };
 
+    const onVisibility = () => {
+      visible = !document.hidden;
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting;
+      },
+      { rootMargin: "80px 0px", threshold: 0 }
+    );
+    io.observe(container);
+
     resize();
     const ro = new ResizeObserver(() => resize());
     ro.observe(container);
     window.addEventListener("resize", resize);
-    section?.addEventListener("mousemove", onMouseMove);
+    section?.addEventListener("mousemove", onMouseMove, { passive: true });
+    section?.addEventListener("touchmove", onTouchMove, { passive: true });
     section?.addEventListener("click", onClick);
+    document.addEventListener("visibilitychange", onVisibility);
 
     function lensPosition() {
-      const parallaxX = (smoothMouseX - 0.5) * 64;
-      const parallaxY = (smoothMouseY - 0.5) * 44;
+      const parallaxX = (smoothMouseX - 0.5) * 64 * perf.parallaxStrength;
+      const parallaxY = (smoothMouseY - 0.5) * 44 * perf.parallaxStrength;
       return { x: w * 0.6 + parallaxX, y: h * 0.48 + parallaxY };
     }
 
     function drawWarpGrid(lx: number, morphAmount: number) {
+      if (!perf.warpGrid) return;
       const gridLeft = lx + 30;
       const rows = 14;
       const cols = 18;
@@ -270,13 +293,15 @@ export function HeroNoiseSignalCanvas() {
       }
 
       ctx.font = "9px ui-monospace, monospace";
-      for (let i = 0; i < 6; i++) {
-        const rowY = ((time * 55 + i * (h / 6)) % (h + 40)) - 20;
-        const alpha = 0.06 * (1 - morphAmount * 0.8);
-        ctx.fillStyle = `rgba(149,79,114,${alpha})`;
-        let line = "";
-        for (let c = 0; c < 14; c++) line += Math.random() > 0.5 ? "1" : "0";
-        ctx.fillText(line, w * 0.22, rowY);
+      if (perf.torrentRows) {
+        for (let i = 0; i < 6; i++) {
+          const rowY = ((time * 55 + i * (h / 6)) % (h + 40)) - 20;
+          const alpha = 0.06 * (1 - morphAmount * 0.8);
+          ctx.fillStyle = `rgba(149,79,114,${alpha})`;
+          let line = "";
+          for (let c = 0; c < 14; c++) line += Math.random() > 0.5 ? "1" : "0";
+          ctx.fillText(line, w * 0.22, rowY);
+        }
       }
     }
 
@@ -287,12 +312,31 @@ export function HeroNoiseSignalCanvas() {
       const bloom = ctx.createRadialGradient(lx, ly, 0, lx, ly, baseR * 3.2);
       bloom.addColorStop(0, `rgba(184,150,46,${0.28 * morphAmount})`);
       bloom.addColorStop(0.25, `rgba(56,111,164,${0.15 * morphAmount})`);
-      bloom.addColorStop(0.6, `rgba(149,79,114,${0.06 * morphAmount})`);
       bloom.addColorStop(1, "rgba(13,27,42,0)");
       ctx.fillStyle = bloom;
       ctx.beginPath();
       ctx.arc(lx, ly, baseR * 3.2, 0, Math.PI * 2);
       ctx.fill();
+
+      if (!perf.chromaticPrism) {
+        ctx.save();
+        ctx.translate(lx, ly);
+        ctx.rotate(rot);
+        ctx.strokeStyle = `rgba(184,150,46,${0.55 * morphAmount})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const a = (i / 6) * Math.PI * 2 - Math.PI / 2;
+          const px = Math.cos(a) * baseR;
+          const py = Math.sin(a) * baseR;
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
+        return;
+      }
 
       const offsets = [
         { dx: -2.5, color: `rgba(149,79,114,${0.45 * morphAmount})` },
@@ -344,19 +388,20 @@ export function HeroNoiseSignalCanvas() {
         born: time,
         fromX: Math.random() * lx * 0.7,
         fromY: Math.random() * h,
-        stream: Math.floor(Math.random() * STREAM_COUNT),
+        stream: Math.floor(Math.random() * perf.streamCount),
         duration: 0.55 + Math.random() * 0.35,
       });
       if (bolts.length > 4) bolts.shift();
     }
 
     function drawEnergyBolts(lx: number, ly: number, phase: number, morphAmount: number) {
+      if (!perf.bolts) return;
       for (const bolt of bolts) {
         const t = (time - bolt.born) / bolt.duration;
         if (t > 1) continue;
         const ease = easeOutCubic(t);
         const endX = lx + 80 + (w - lx) * 0.55;
-        const endY = streamY(endX, bolt.stream, h, phase);
+        const endY = streamY(endX, bolt.stream, h, phase, perf.streamCount);
 
         const cp1x = bolt.fromX + (lx - bolt.fromX) * 0.5 + Math.sin(time * 20) * 20;
         const cp1y = bolt.fromY + (ly - bolt.fromY) * 0.4;
@@ -371,8 +416,10 @@ export function HeroNoiseSignalCanvas() {
 
         ctx.strokeStyle = gradient;
         ctx.lineWidth = 1.5 + (1 - t) * 1.5;
-        ctx.shadowBlur = 14 * (1 - t);
-        ctx.shadowColor = `rgba(184,150,46,${alpha})`;
+        if (perf.shadows) {
+          ctx.shadowBlur = 14 * (1 - t);
+          ctx.shadowColor = `rgba(184,150,46,${alpha})`;
+        }
         ctx.beginPath();
         ctx.moveTo(bolt.fromX, bolt.fromY);
         ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);
@@ -389,6 +436,7 @@ export function HeroNoiseSignalCanvas() {
     }
 
     function drawConstellation(lx: number, morphAmount: number) {
+      if (!perf.constellation) return;
       const signalPts = particles
         .filter((p) => p.x > lx + 40)
         .sort((a, b) => b.x - a.x)
@@ -426,7 +474,7 @@ export function HeroNoiseSignalCanvas() {
     }
 
     function drawStreams(lx: number, phase: number, morphAmount: number) {
-      for (let s = 0; s < STREAM_COUNT; s++) {
+      for (let s = 0; s < perf.streamCount; s++) {
         const alpha = (0.1 + morphAmount * 0.28) * (0.65 + 0.35 * Math.sin(phase + s * 0.8));
         const gradient = ctx.createLinearGradient(lx, 0, w, 0);
         gradient.addColorStop(0, `rgba(56,111,164,0)`);
@@ -435,12 +483,14 @@ export function HeroNoiseSignalCanvas() {
 
         ctx.strokeStyle = gradient;
         ctx.lineWidth = 1.2 + morphAmount * 0.8;
-        ctx.shadowBlur = 6 * morphAmount;
-        ctx.shadowColor = `rgba(56,111,164,${alpha * 0.5})`;
+        if (perf.shadows) {
+          ctx.shadowBlur = 6 * morphAmount;
+          ctx.shadowColor = `rgba(56,111,164,${alpha * 0.5})`;
+        }
         ctx.beginPath();
         let started = false;
-        for (let x = lx + 16; x < w; x += 2) {
-          const y = streamY(x, s, h, phase);
+        for (let x = lx + 16; x < w; x += perf.streamStep) {
+          const y = streamY(x, s, h, phase, perf.streamCount);
           if (!started) {
             ctx.moveTo(x, y);
             started = true;
@@ -453,9 +503,10 @@ export function HeroNoiseSignalCanvas() {
 
     function step(ts: number) {
       raf = requestAnimationFrame(step);
+      if (!visible || !inView) return;
       if (lastTs === 0) lastTs = ts;
       const dt = ts - lastTs;
-      if (dt < FRAME_MS) return;
+      if (dt < perf.frameMs) return;
       lastTs = ts;
       time += Math.min(dt / 1000, 0.05);
 
@@ -465,13 +516,13 @@ export function HeroNoiseSignalCanvas() {
       if (!reducedMotion) {
         const elapsed = (ts - morphStart) / 1000;
         morph = easeOutCubic(Math.min(elapsed / MORPH_DURATION, 1));
-        if (time - lastPulse > PULSE_INTERVAL) {
+        if (time - lastPulse > perf.pulseInterval) {
           const lp = lensPosition();
           pulses.push({ born: time, speed: 95 + Math.random() * 50, x: lp.x, y: lp.y });
           lastPulse = time;
           if (pulses.length > 8) pulses.shift();
         }
-        if (time - lastBolt > BOLT_INTERVAL && morph > 0.4) {
+        if (perf.bolts && time - lastBolt > perf.boltInterval && morph > 0.4) {
           const lp = lensPosition();
           spawnBolt(lp.x, lp.y);
           lastBolt = time;
@@ -580,7 +631,7 @@ export function HeroNoiseSignalCanvas() {
         }
 
         if (p.x > lx + lensR * 0.2) {
-          const targetY = streamY(p.x, p.stream, h, phase);
+          const targetY = streamY(p.x, p.stream, h, phase, perf.streamCount);
           ay += (targetY - p.y) * (0.035 + signalT * 0.07);
           ax += 0.15 * signalT;
           const mdx = mousePxX - p.x;
@@ -622,37 +673,42 @@ export function HeroNoiseSignalCanvas() {
 
       drawConstellation(lx, morph);
 
-      for (let i = 0; i < N; i++) {
-        const a = particles[i];
-        if (a.x < lx - lensR * 1.2 || a.x > lx + lensR * 1.2) continue;
-        for (let j = i + 1; j < Math.min(i + 6, N); j++) {
-          const b = particles[j];
-          const d2 = (a.x - b.x) ** 2 + (a.y - b.y) ** 2;
-          if (d2 > 42 * 42) continue;
-          const alpha = (1 - Math.sqrt(d2) / 42) * 0.35 * morph;
-          ctx.strokeStyle = `rgba(184,150,46,${alpha})`;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
+      if (perf.particleLinks) {
+        const count = particles.length;
+        for (let i = 0; i < count; i++) {
+          const a = particles[i];
+          if (a.x < lx - lensR * 1.2 || a.x > lx + lensR * 1.2) continue;
+          for (let j = i + 1; j < Math.min(i + 6, count); j++) {
+            const b = particles[j];
+            const d2 = (a.x - b.x) ** 2 + (a.y - b.y) ** 2;
+            if (d2 > 42 * 42) continue;
+            const alpha = (1 - Math.sqrt(d2) / 42) * 0.35 * morph;
+            ctx.strokeStyle = `rgba(184,150,46,${alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
         }
       }
 
-      ctx.globalCompositeOperation = "lighter";
-      for (const p of particles) {
-        const sideT = easeInOutSine(Math.max(0, Math.min(1, (p.x - lx + lensR) / (w - lx + lensR))));
-        const signalT = sideT * morph;
-        if (signalT < 0.5) continue;
+      if (perf.bloom) {
+        ctx.globalCompositeOperation = "lighter";
+        for (const p of particles) {
+          const sideT = easeInOutSine(Math.max(0, Math.min(1, (p.x - lx + lensR) / (w - lx + lensR))));
+          const signalT = sideT * morph;
+          if (signalT < 0.5) continue;
 
-        const fr = lerp(COL_BLUE.r, COL_GOLD.r, signalT);
-        const fg = lerp(COL_BLUE.g, COL_GOLD.g, signalT);
-        const fb = lerp(COL_BLUE.b, COL_GOLD.b, signalT);
-        ctx.fillStyle = `rgba(${fr},${fg},${fb},${signalT * 0.15})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * 3.5, 0, Math.PI * 2);
-        ctx.fill();
+          const fr = lerp(COL_BLUE.r, COL_GOLD.r, signalT);
+          const fg = lerp(COL_BLUE.g, COL_GOLD.g, signalT);
+          const fb = lerp(COL_BLUE.b, COL_GOLD.b, signalT);
+          ctx.fillStyle = `rgba(${fr},${fg},${fb},${signalT * 0.15})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalCompositeOperation = "source-over";
       }
-      ctx.globalCompositeOperation = "source-over";
 
       for (const p of particles) {
         const sideT = easeInOutSine(Math.max(0, Math.min(1, (p.x - lx + lensR) / (w - lx + lensR))));
@@ -671,7 +727,7 @@ export function HeroNoiseSignalCanvas() {
         ctx.lineTo(p.x, p.y);
         ctx.stroke();
 
-        if (signalT > 0.4) {
+        if (signalT > 0.4 && perf.shadows) {
           ctx.shadowBlur = 16 * signalT;
           ctx.shadowColor = `rgba(56,111,164,${0.7 * signalT})`;
         }
@@ -689,9 +745,12 @@ export function HeroNoiseSignalCanvas() {
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      io.disconnect();
       window.removeEventListener("resize", resize);
       section?.removeEventListener("mousemove", onMouseMove);
+      section?.removeEventListener("touchmove", onTouchMove);
       section?.removeEventListener("click", onClick);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 

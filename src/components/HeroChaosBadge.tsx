@@ -4,6 +4,12 @@ import { cn } from "@/lib/utils";
 
 function useScrambleBinary(seed: string, active: boolean) {
   const [display, setDisplay] = useState(seed);
+  const [intervalMs, setIntervalMs] = useState(90);
+
+  useEffect(() => {
+    const mobile = window.matchMedia("(max-width: 767px)").matches;
+    setIntervalMs(mobile ? 280 : 90);
+  }, []);
 
   useEffect(() => {
     if (!active) {
@@ -17,9 +23,9 @@ function useScrambleBinary(seed: string, active: boolean) {
           .map(() => (Math.random() > 0.45 ? "1" : "0"))
           .join("")
       );
-    }, 90);
+    }, intervalMs);
     return () => window.clearInterval(id);
-  }, [seed, active]);
+  }, [seed, active, intervalMs]);
 
   return display;
 }
