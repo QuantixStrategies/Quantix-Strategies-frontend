@@ -329,11 +329,6 @@ function generateValuePropositions(
       strategic.push('Build sustainable leadership model and recovery roadmap');
       strategic.push('Temporarily manage strategic operations to enable founder recovery');
     }
-    if (strategic.length < 3) {
-      strategic.push('Optimize strategic time allocation and priority management');
-      strategic.push('Develop advanced decision-making frameworks');
-      strategic.push('Implement strategic planning and review cycles');
-    }
   }
 
   if (track === 'operational' || track === 'comprehensive') {
@@ -361,11 +356,18 @@ function generateValuePropositions(
       operational.push('Create crisis management and escalation frameworks');
       operational.push('Implement Founder Shield PMO for operational stability');
     }
-    if (operational.length < 3) {
-      operational.push('Enhance delegation systems and operational efficiency');
-      operational.push('Build scalable communication and coordination systems');
-      operational.push('Create comprehensive operational documentation');
-    }
+  }
+
+  // HTML scorecard: minimum fallbacks apply to both columns regardless of track
+  if (strategic.length < 3) {
+    strategic.push('Optimize strategic time allocation and priority management');
+    strategic.push('Develop advanced decision-making frameworks');
+    strategic.push('Implement strategic planning and review cycles');
+  }
+  if (operational.length < 3) {
+    operational.push('Enhance delegation systems and operational efficiency');
+    operational.push('Build scalable communication and coordination systems');
+    operational.push('Create comprehensive operational documentation');
   }
 
   return {

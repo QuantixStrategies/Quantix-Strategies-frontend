@@ -5,6 +5,15 @@ import {
   calculateScore,
   calculateStrategicComponent,
 } from './assessmentScoring';
+import {
+  htmlCalculateOperationalComponent,
+  htmlCalculateStrategicComponent,
+  htmlCalculateTrackScore,
+  htmlInterpretationLabel,
+  randomResponsesForTrack,
+  toHtmlFormData,
+} from './htmlScorecardReference';
+import type { AssessmentTrack } from '@/types/assessment';
 
 const perfectStrategic = {
   time_split: 5,
@@ -120,6 +129,81 @@ describe('assessmentScoring', () => {
     const result = calculateScore(worstStrategic, 'strategic');
     expect(result.cumulativeRoadmap.length).toBe(5);
     expect(result.strategicValuePropositions.length).toBeGreaterThanOrEqual(3);
+    expect(result.operationalValuePropositions.length).toBeGreaterThanOrEqual(3);
     expect(result.chartInsight.length).toBeGreaterThan(0);
+  });
+
+  it('defaults missing component scores to 50 per HTML scorecard', () => {
+    expect(calculateScore(perfectStrategic, 'strategic').operationalScore).toBe(50);
+    expect(calculateScore(perfectOperational, 'operational').strategicScore).toBe(50);
+  });
+
+  describe('HTML scorecard parity', () => {
+    const tracks: AssessmentTrack[] = ['strategic', 'operational', 'comprehensive'];
+    const fixtures = [
+      { name: 'perfect strategic', responses: perfectStrategic, track: 'strategic' as const },
+      { name: 'worst strategic', responses: worstStrategic, track: 'strategic' as const },
+      { name: 'perfect operational', responses: perfectOperational, track: 'operational' as const },
+      {
+        name: 'comprehensive merged',
+        responses: { ...perfectStrategic, ...perfectOperational },
+        track: 'comprehensive' as const,
+      },
+    ];
+
+    fixtures.forEach(({ name, responses, track }) => {
+      it(`matches HTML track score for ${name}`, () => {
+        const formData = toHtmlFormData(responses, track);
+        const ts = calculateScore(responses, track);
+        const html = htmlCalculateTrackScore(formData, track);
+
+        expect(ts.score).toBe(html);
+        expect(ts.interpretation.label).toBe(htmlInterpretationLabel(html));
+      });
+    });
+
+    it('matches HTML component scores across 120 randomized cases per track', () => {
+      tracks.forEach((track) => {
+        for (let seed = 0; seed < 120; seed++) {
+          const responses = randomResponsesForTrack(track, seed);
+          const formData = toHtmlFormData(responses, track);
+          const ts = calculateScore(responses, track);
+
+          expect(ts.score).toBe(htmlCalculateTrackScore(formData, track));
+          expect(ts.strategicScore).toBe(htmlCalculateStrategicComponent(formData));
+          expect(ts.operationalScore).toBe(htmlCalculateOperationalComponent(formData));
+        }
+      });
+    });
+
+    it('matches HTML comprehensive merge scoring', () => {
+      for (let seed = 0; seed < 60; seed++) {
+        const strategic = randomResponsesForTrack('strategic', seed);
+        const operational = randomResponsesForTrack('operational', seed + 500);
+        const merged = { ...strategic, ...operational };
+        const formData = toHtmlFormData(merged, 'comprehensive');
+
+        const ts = calculateComprehensiveScore(strategic, operational);
+        expect(ts.score).toBe(htmlCalculateTrackScore(formData, 'comprehensive'));
+        expect(ts.strategicScore).toBe(htmlCalculateStrategicComponent(formData));
+        expect(ts.operationalScore).toBe(htmlCalculateOperationalComponent(formData));
+      }
+    });
+
+    it('matches HTML value proposition fallbacks on single-track assessments', () => {
+      const strategicOnly = calculateScore(perfectStrategic, 'strategic');
+      expect(strategicOnly.operationalValuePropositions).toEqual([
+        'Enhance delegation systems and operational efficiency',
+        'Build scalable communication and coordination systems',
+        'Create comprehensive operational documentation',
+      ]);
+
+      const operationalOnly = calculateScore(perfectOperational, 'operational');
+      expect(operationalOnly.strategicValuePropositions).toEqual([
+        'Optimize strategic time allocation and priority management',
+        'Develop advanced decision-making frameworks',
+        'Implement strategic planning and review cycles',
+      ]);
+    });
   });
 });
