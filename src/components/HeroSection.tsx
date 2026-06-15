@@ -12,17 +12,41 @@ const HeroSection = () => {
       <HeroNoiseSignalCanvas />
 
       <div className="pointer-events-none absolute right-[4%] top-[28%] z-[1] hidden lg:block">
-        <div className="relative">
-          <div className="absolute -inset-6 rounded-full bg-[#B8962E]/10 blur-2xl" />
-          <div className="relative rounded-full border border-[#B8962E]/30 bg-[#0D1B2A]/60 px-5 py-4 backdrop-blur-sm">
-            <p className="text-center text-[9px] font-medium uppercase tracking-[0.35em] text-[#B8962E]">
+        <motion.div
+          className="relative"
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="absolute -inset-8 rounded-full bg-[#B8962E]/15 blur-3xl" />
+          <div className="absolute -inset-3 animate-pulse rounded-full border border-[#386FA4]/20" />
+          <div className="relative rounded-2xl border border-[#B8962E]/35 bg-[#0D1B2A]/70 px-6 py-5 backdrop-blur-md">
+            <p className="text-center text-[9px] font-medium uppercase tracking-[0.38em] text-[#B8962E]">
               The Lens
             </p>
-            <p className="mt-1 text-center font-playfair text-sm italic text-[#F0EDE8]/80">
+            <p className="mt-2 text-center font-playfair text-base italic text-[#F0EDE8]/90">
               Data → Decision
             </p>
+            <div className="mt-3 flex items-center justify-center gap-3 border-t border-[#386FA4]/20 pt-3">
+              <motion.span
+                className="font-mono text-lg text-[#954F72]/80"
+                key="noise-count"
+                initial={{ opacity: 0.4 }}
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                2,847
+              </motion.span>
+              <span className="text-[#B8962E]/60">→</span>
+              <motion.span
+                className="font-playfair text-2xl text-[#386FA4]"
+                animate={{ scale: [1, 1.08, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                1
+              </motion.span>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <div className="container relative z-[1] mx-auto px-4 py-32 lg:px-8 lg:py-40">
