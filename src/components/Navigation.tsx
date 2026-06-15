@@ -83,11 +83,12 @@ const Navigation = () => {
               <NavLink key={item.label} item={item} className={linkClass} />
             ))}
             <Button
+              asChild
               variant="default"
               size="lg"
               className="bg-[var(--color-accent-blue)] text-[var(--color-text-primary)] hover:bg-[var(--color-accent-rose)] transition-all duration-200 ease-out"
             >
-              Contact Us
+              <a href="mailto:inquiries@quantixstrategies.com">Contact Us</a>
             </Button>
           </div>
 
@@ -113,11 +114,12 @@ const Navigation = () => {
                 />
               ))}
               <Button
+                asChild
                 variant="default"
                 size="lg"
                 className="w-full bg-[var(--color-accent-blue)] text-[var(--color-text-primary)] hover:bg-[var(--color-accent-rose)] transition-all duration-200 ease-out"
               >
-                Contact Us
+                <a href="mailto:inquiries@quantixstrategies.com">Contact Us</a>
               </Button>
             </div>
           </div>

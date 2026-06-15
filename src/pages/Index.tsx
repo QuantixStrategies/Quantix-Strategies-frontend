@@ -1,8 +1,11 @@
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
-import TrustIndicators from "@/components/TrustIndicators";
+import ProblemSection from "@/components/ProblemSection";
+import ProofSection from "@/components/ProofSection";
 import CoreEthosSection from "@/components/CoreEthosSection";
 import ServicesSection from "@/components/ServicesSection";
+import AssessmentPromoSection from "@/components/AssessmentPromoSection";
+import FinalCtaSection from "@/components/FinalCtaSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -11,9 +14,12 @@ const Index = () => {
       <Navigation />
       <main>
         <HeroSection />
-        <TrustIndicators />
+        <ProblemSection />
+        <ProofSection />
         <CoreEthosSection />
         <ServicesSection />
+        <AssessmentPromoSection />
+        <FinalCtaSection />
       </main>
       <Footer />
     </div>

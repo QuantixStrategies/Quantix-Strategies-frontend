@@ -1,4 +1,5 @@
 import { Users, FileText, Settings, Handshake, LineChart, Briefcase, type LucideIcon } from "lucide-react";
+import { NarrativeChapter } from "@/components/NarrativeChapter";
 
 type Tier = "corporate" | "asset";
 
@@ -176,20 +177,12 @@ const ServicesSection = () => {
   return (
     <section id="services" className="bg-[#0D1B2A] py-[100px]">
       <div className="container mx-auto max-w-6xl px-4 lg:px-8">
-        <h2 className="text-center text-[36px] font-bold leading-tight text-[#F0EDE8]">
-          Comprehensive Consulting Services
-        </h2>
-        <div
-          className="mx-auto h-[3px] w-[60px] bg-[#B8962E]"
-          style={{ margin: "12px auto 16px" }}
+        <NarrativeChapter
+          chapter="Chapter 04"
+          title="What We Deliver"
+          subtitle="End-to-end strategic support across business operations, investment decisions, and portfolio optimization."
+          className="mb-[60px]"
         />
-        <p
-          className="mx-auto mb-[60px] max-w-[600px] text-center text-[#A8B2BD]"
-          style={{ lineHeight: 1.6 }}
-        >
-          End-to-end strategic support across business operations, investment decisions, and portfolio
-          optimization
-        </p>
 
         <div className="mb-12">
           <TierHeader tier="corporate" />

@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useLayoutEffect, useCallback } from "react";
+import { NarrativeChapter } from "@/components/NarrativeChapter";
 import { cn } from "@/lib/utils";
 
 const ethosPoints = [
@@ -96,9 +97,7 @@ const cardShell =
 
 export default function CoreEthosSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [titleVisible, setTitleVisible] = useState(false);
   const [lineProgress, setLineProgress] = useState(0);
   const [visibleRows, setVisibleRows] = useState<boolean[]>(() => ethosPoints.map(() => false));
 
@@ -111,16 +110,6 @@ export default function CoreEthosSection() {
     const traveled = start - rect.top;
     const denom = Math.max(rect.height * 0.55, 1);
     setLineProgress(Math.min(1, Math.max(0, traveled / denom)));
-  }, []);
-
-  useEffect(() => {
-    const titleEl = titleRef.current;
-    if (!titleEl) return;
-    const obs = new IntersectionObserver(([e]) => e.isIntersecting && setTitleVisible(true), {
-      threshold: 0.25,
-    });
-    obs.observe(titleEl);
-    return () => obs.disconnect();
   }, []);
 
   useEffect(() => {
@@ -167,24 +156,12 @@ export default function CoreEthosSection() {
       className="relative overflow-hidden bg-[#0D1B2A] py-[100px]"
     >
       <div className="container relative z-10 mx-auto max-w-6xl px-4 lg:px-8">
-        <div ref={titleRef} className="mb-16 text-center md:mb-20">
-          <h2
-            className="mb-3 text-3xl font-bold text-[#F0EDE8] lg:text-4xl"
-            style={{ lineHeight: "var(--leading-tight)" }}
-          >
-            Quantix Strategies: Core Ethos
-          </h2>
-          <div
-            className="mx-auto mb-4 h-[3px] bg-[#B8962E] transition-all duration-500 ease-out"
-            style={{ width: titleVisible ? 60 : 0, maxWidth: 60 }}
-          />
-          <p
-            className="mx-auto max-w-[500px] text-sm text-[#A8B2BD]"
-            style={{ lineHeight: "var(--leading-relaxed)" }}
-          >
-            The principles that guide every engagement we take on.
-          </p>
-        </div>
+        <NarrativeChapter
+          chapter="Chapter 03"
+          title="Our Philosophy"
+          subtitle="The principles that guide every engagement we take on."
+          className="mb-16 md:mb-20"
+        />
 
         <div className="relative mx-auto max-w-5xl">
           <div
