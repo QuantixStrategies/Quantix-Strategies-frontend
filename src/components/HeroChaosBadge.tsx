@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 function useScrambleBinary(seed: string, active: boolean) {
   const [display, setDisplay] = useState(seed);
@@ -23,19 +24,23 @@ function useScrambleBinary(seed: string, active: boolean) {
   return display;
 }
 
-export function HeroChaosBadge() {
+type HeroChaosBadgeProps = {
+  className?: string;
+};
+
+export function HeroChaosBadge({ className }: HeroChaosBadgeProps) {
   const bits = useScrambleBinary("01001110", true);
 
   return (
     <motion.div
-      className="pointer-events-none absolute bottom-36 left-4 z-[2] sm:bottom-[30%] sm:left-6 lg:left-10"
-      initial={{ opacity: 0, x: -16 }}
+      className={cn("pointer-events-none relative w-fit", className)}
+      initial={{ opacity: 0, x: -12 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.9, delay: 0.8, ease: "easeOut" }}
     >
       <div className="relative">
         <div className="absolute -inset-3 rounded-lg bg-[#954F72]/10 blur-xl" />
-        <div className="relative border-l-2 border-[#954F72] bg-[#0D1B2A]/75 px-4 py-3 backdrop-blur-md sm:px-5 sm:py-4">
+        <div className="relative border-l-2 border-[#954F72] bg-[#0D1B2A]/80 px-4 py-3 backdrop-blur-md sm:px-5 sm:py-4">
           <motion.span
             className="block font-mono text-sm tracking-[0.25em] text-[#954F72] sm:text-base"
             animate={{ opacity: [0.55, 1, 0.55] }}
