@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react";
 
-const N = 260;
-const STREAM_COUNT = 7;
-const GLYPH_COUNT = 36;
+const N = 300;
+const STREAM_COUNT = 8;
+const GLYPH_COUNT = 64;
 const FRAME_MS = 1000 / 60;
 const MORPH_DURATION = 4;
-const PULSE_INTERVAL = 3.6;
-const BOLT_INTERVAL = 2.4;
+const PULSE_INTERVAL = 3;
+const BOLT_INTERVAL = 1.9;
 
 const COL_ROSE = { r: 149, g: 79, b: 114 };
 const COL_BLUE = { r: 56, g: 111, b: 164 };
@@ -100,7 +100,7 @@ export function HeroNoiseSignalCanvas() {
       glyphs.length = 0;
       for (let i = 0; i < GLYPH_COUNT; i++) {
         glyphs.push({
-          x: Math.random() * w * 0.38,
+          x: Math.random() * w * 0.5,
           y: Math.random() * h,
           vy: 0.4 + Math.random() * 1.2,
           char: BINARY[Math.floor(Math.random() * 2)],
@@ -253,18 +253,30 @@ export function HeroNoiseSignalCanvas() {
     }
 
     function drawBinaryRain(morphAmount: number) {
-      ctx.font = "10px ui-monospace, monospace";
+      ctx.font = "11px ui-monospace, monospace";
       ctx.textAlign = "center";
       for (const g of glyphs) {
-        g.y += g.vy * (1.2 - morphAmount * 0.5);
+        g.y += g.vy * (1.4 - morphAmount * 0.4);
+        g.x += Math.sin(time * 2 + g.phase) * 0.35 * (1 - morphAmount * 0.5);
         if (g.y > h + 20) {
-          g.y = -10;
-          g.x = Math.random() * w * 0.38;
+          g.y = -10 - Math.random() * 40;
+          g.x = Math.random() * w * 0.5;
+          g.char = BINARY[Math.floor(Math.random() * 2)];
         }
-        const flicker = 0.15 + 0.25 * Math.sin(time * 4 + g.phase);
-        const alpha = flicker * (1 - morphAmount * 0.75);
+        const flicker = 0.2 + 0.35 * Math.sin(time * 5 + g.phase);
+        const alpha = flicker * (1 - morphAmount * 0.65);
         ctx.fillStyle = `rgba(149,79,114,${alpha})`;
         ctx.fillText(g.char, g.x, g.y);
+      }
+
+      ctx.font = "9px ui-monospace, monospace";
+      for (let i = 0; i < 6; i++) {
+        const rowY = ((time * 55 + i * (h / 6)) % (h + 40)) - 20;
+        const alpha = 0.06 * (1 - morphAmount * 0.8);
+        ctx.fillStyle = `rgba(149,79,114,${alpha})`;
+        let line = "";
+        for (let c = 0; c < 14; c++) line += Math.random() > 0.5 ? "1" : "0";
+        ctx.fillText(line, w * 0.22, rowY);
       }
     }
 
@@ -479,6 +491,12 @@ export function HeroNoiseSignalCanvas() {
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
 
+      const chaosZone = ctx.createLinearGradient(0, 0, w * 0.55, 0);
+      chaosZone.addColorStop(0, `rgba(149,79,114,${0.07 * (1 - morph * 0.4)})`);
+      chaosZone.addColorStop(1, "rgba(149,79,114,0)");
+      ctx.fillStyle = chaosZone;
+      ctx.fillRect(0, 0, w * 0.55, h);
+
       const nebula = ctx.createRadialGradient(lx, ly, 0, lx, ly, Math.max(w, h) * 0.7);
       nebula.addColorStop(0, `rgba(56,111,164,${0.09 + morph * 0.06})`);
       nebula.addColorStop(0.35, `rgba(184,150,46,${0.04 * morph})`);
@@ -547,9 +565,12 @@ export function HeroNoiseSignalCanvas() {
 
         if (p.x < lx - lensR * 0.4) {
           const vortexAngle = Math.atan2(dyL, dxL) + Math.PI / 2;
-          ax += Math.cos(vortexAngle) * 0.2 * (1 - signalT);
-          ay += Math.sin(vortexAngle) * 0.2 * (1 - signalT);
-          ax += (lx - p.x) * 0.0004 * morph;
+          ax += Math.cos(vortexAngle) * 0.32 * (1 - signalT);
+          ay += Math.sin(vortexAngle) * 0.32 * (1 - signalT);
+          ax += (lx - p.x) * 0.00055 * morph;
+          const pull = 1 / Math.max(distLens, 40);
+          ax += dxL * pull * 0.15 * (1 - signalT);
+          ay += dyL * pull * 0.15 * (1 - signalT);
         }
 
         if (distLens < lensR * 2.5) {
@@ -678,21 +699,11 @@ export function HeroNoiseSignalCanvas() {
     <div ref={containerRef} className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />
 
+      {/* Narrower scrim: keeps headline readable without swallowing the chaos zone */}
       <div
-        className="absolute inset-y-0 left-0 w-[min(62%,560px)] bg-gradient-to-r from-[#0A1622] via-[#0D1B2A]/94 to-transparent"
+        className="absolute inset-y-0 left-0 w-[min(42%,400px)] bg-gradient-to-r from-[#0A1622] via-[#0D1B2A]/80 to-transparent sm:w-[min(38%,380px)]"
         aria-hidden
       />
-
-      <div
-        className="absolute left-[4%] top-[20%] hidden flex-col gap-2 sm:flex lg:left-[5%]"
-        aria-hidden
-      >
-        <span className="font-mono text-[10px] text-[#954F72]/50">01001110</span>
-        <span className="font-playfair text-xs italic text-[#954F72]/70">chaos</span>
-        <span className="text-[9px] font-medium uppercase tracking-[0.45em] text-[#954F72]/45">
-          NOISE
-        </span>
-      </div>
 
       <div
         className="absolute bottom-[18%] right-[4%] hidden flex-col items-end gap-2 text-right lg:flex"

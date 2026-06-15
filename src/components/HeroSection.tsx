@@ -3,15 +3,17 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { HeroNoiseSignalCanvas } from "@/components/HeroNoiseSignalCanvas";
+import { HeroChaosBadge } from "@/components/HeroChaosBadge";
 
 const ACCENT_GOLD = "#B8962E";
 
 const HeroSection = () => {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-screen items-start justify-center overflow-hidden pt-28 pb-24 sm:pt-32 lg:pt-36">
       <HeroNoiseSignalCanvas />
+      <HeroChaosBadge />
 
-      <div className="pointer-events-none absolute right-[4%] top-[28%] z-[1] hidden lg:block">
+      <div className="pointer-events-none absolute right-[4%] top-[22%] z-[1] hidden lg:block">
         <motion.div
           className="relative"
           animate={{ y: [0, -6, 0] }}
@@ -49,8 +51,8 @@ const HeroSection = () => {
         </motion.div>
       </div>
 
-      <div className="container relative z-[1] mx-auto px-4 py-32 lg:px-8 lg:py-40">
-        <div className="max-w-4xl">
+      <div className="container relative z-[1] mx-auto px-4 lg:px-8 lg:pb-8">
+        <div className="max-w-2xl lg:max-w-3xl">
           <motion.p
             className="mb-6 text-[11px] font-medium uppercase tracking-[0.35em] text-[#B8962E]"
             style={{ letterSpacing: "0.35em" }}
