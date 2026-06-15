@@ -91,7 +91,7 @@ export function AssessmentLeadForm({ pending, onSuccess }: AssessmentLeadFormPro
           Tell Us About Your Business
         </h2>
         <p className="mx-auto mt-4 max-w-[520px] text-[15px] leading-relaxed text-[var(--text-muted)]">
-          You&apos;re almost there. Share a few details so we can tailor your results — and connect
+          You&apos;re almost there. Share a few details so we can tailor your results, and connect
           if you&apos;d like a follow-up conversation.
         </p>
       </header>

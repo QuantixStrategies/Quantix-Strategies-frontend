@@ -64,11 +64,11 @@ export const strategicQuestions: Question[] = [
     section: 'Delegation & Decision Making',
     type: 'scaled',
     options: [
-      { value: 1, label: "Daily - I'm the bottleneck for most decisions" },
+      { value: 1, label: "Daily: I'm the bottleneck for most decisions" },
       { value: 2, label: 'Several times per week' },
-      { value: 3, label: 'Weekly - some decisions pile up' },
-      { value: 4, label: 'Rarely - only major strategic decisions' },
-      { value: 5, label: 'Never - clear decision frameworks exist' },
+      { value: 3, label: 'Weekly: some decisions pile up' },
+      { value: 4, label: 'Rarely: only major strategic decisions' },
+      { value: 5, label: 'Never: clear decision frameworks exist' },
     ],
   },
   {
@@ -89,11 +89,11 @@ export const strategicQuestions: Question[] = [
     section: 'Leadership Sustainability & Growth',
     type: 'scaled',
     options: [
-      { value: 1, label: 'Unsustainable - heading toward burnout' },
-      { value: 2, label: 'Challenging - working 70+ hours/week' },
-      { value: 3, label: 'Manageable - some personal time exists' },
-      { value: 4, label: 'Sustainable - healthy work-life balance' },
-      { value: 5, label: 'Optimal - excellent integration and energy' },
+      { value: 1, label: 'Unsustainable: heading toward burnout' },
+      { value: 2, label: 'Challenging: working 70+ hours/week' },
+      { value: 3, label: 'Manageable: some personal time exists' },
+      { value: 4, label: 'Sustainable: healthy work-life balance' },
+      { value: 5, label: 'Optimal: excellent integration and energy' },
     ],
   },
   {
@@ -103,11 +103,11 @@ export const strategicQuestions: Question[] = [
     section: 'Leadership Sustainability & Growth',
     type: 'scaled',
     options: [
-      { value: 1, label: 'Not prepared - heavy founder dependency' },
-      { value: 2, label: 'Somewhat prepared - some systems in place' },
-      { value: 3, label: 'Moderately prepared - decent foundation' },
-      { value: 4, label: 'Well prepared - strong systems and delegation' },
-      { value: 5, label: 'Fully prepared - autonomous scaling capability' },
+      { value: 1, label: 'Not prepared: heavy founder dependency' },
+      { value: 2, label: 'Somewhat prepared: some systems in place' },
+      { value: 3, label: 'Moderately prepared: decent foundation' },
+      { value: 4, label: 'Well prepared: strong systems and delegation' },
+      { value: 5, label: 'Fully prepared: autonomous scaling capability' },
     ],
   },
   {
@@ -129,11 +129,11 @@ export const strategicQuestions: Question[] = [
     section: 'Leadership Sustainability & Growth',
     type: 'scaled',
     options: [
-      { value: 1, label: 'Rarely - constantly derailed (0-20% adherence)' },
-      { value: 2, label: 'Sometimes - frequent interruptions (20-40%)' },
-      { value: 3, label: 'Often - moderate adherence (40-60%)' },
-      { value: 4, label: 'Usually - good adherence (60-80%)' },
-      { value: 5, label: 'Consistently - excellent adherence (80%+)' },
+      { value: 1, label: 'Rarely: constantly derailed (0-20% adherence)' },
+      { value: 2, label: 'Sometimes: frequent interruptions (20-40%)' },
+      { value: 3, label: 'Often: moderate adherence (40-60%)' },
+      { value: 4, label: 'Usually: good adherence (60-80%)' },
+      { value: 5, label: 'Consistently: excellent adherence (80%+)' },
     ],
   },
 ];
@@ -146,11 +146,11 @@ export const operationalQuestions: Question[] = [
     section: 'Organizational Structure & Communication',
     type: 'scaled',
     options: [
-      { value: 1, label: 'Very unclear - lots of overlap and confusion' },
-      { value: 2, label: 'Somewhat unclear - frequent conflicts' },
+      { value: 1, label: 'Very unclear: lots of overlap and confusion' },
+      { value: 2, label: 'Somewhat unclear: frequent conflicts' },
       { value: 3, label: 'Generally clear with some gray areas' },
-      { value: 4, label: 'Mostly clear - well-defined responsibilities' },
-      { value: 5, label: 'Crystal clear - unambiguous roles' },
+      { value: 4, label: 'Mostly clear: well-defined responsibilities' },
+      { value: 5, label: 'Crystal clear: unambiguous roles' },
     ],
   },
   {
@@ -160,11 +160,11 @@ export const operationalQuestions: Question[] = [
     section: 'Organizational Structure & Communication',
     type: 'scaled',
     options: [
-      { value: 1, label: "Poorly - I'm needed for most coordination" },
-      { value: 2, label: 'Adequately - some coordination happens' },
-      { value: 3, label: 'Well - teams coordinate on routine matters' },
-      { value: 4, label: 'Very well - smooth cross-functional flow' },
-      { value: 5, label: 'Exceptionally - autonomous coordination' },
+      { value: 1, label: "Poorly: I'm needed for most coordination" },
+      { value: 2, label: 'Adequately: some coordination happens' },
+      { value: 3, label: 'Well: teams coordinate on routine matters' },
+      { value: 4, label: 'Very well: smooth cross-functional flow' },
+      { value: 5, label: 'Exceptionally: autonomous coordination' },
     ],
   },
   {
@@ -174,7 +174,7 @@ export const operationalQuestions: Question[] = [
     section: 'Organizational Structure & Communication',
     type: 'scaled',
     options: [
-      { value: 1, label: 'Ad-hoc only - constant interruptions' },
+      { value: 1, label: 'Ad-hoc only: constant interruptions' },
       { value: 2, label: 'Mostly ad-hoc with some meetings' },
       { value: 3, label: 'Regular meetings with some structure' },
       { value: 4, label: 'Well-structured communication cadence' },
@@ -215,11 +215,11 @@ export const operationalQuestions: Question[] = [
     section: 'Execution & Operational Excellence',
     type: 'scaled',
     options: [
-      { value: 1, label: 'Poor - minimal visibility into progress' },
-      { value: 2, label: 'Basic - some tracking, inconsistent' },
-      { value: 3, label: 'Good - regular tracking with gaps' },
-      { value: 4, label: 'Strong - comprehensive tracking systems' },
-      { value: 5, label: 'Excellent - real-time visibility and reporting' },
+      { value: 1, label: 'Poor: minimal visibility into progress' },
+      { value: 2, label: 'Basic: some tracking, inconsistent' },
+      { value: 3, label: 'Good: regular tracking with gaps' },
+      { value: 4, label: 'Strong: comprehensive tracking systems' },
+      { value: 5, label: 'Excellent: real-time visibility and reporting' },
     ],
   },
   {
@@ -236,7 +236,7 @@ export const operationalQuestions: Question[] = [
   },
   {
     id: 'board_systems',
-    title: 'Board & Investor Relations - Systems',
+    title: 'Board & Investor Relations: Systems',
     subtitle:
       'Do you have structured systems and processes for board preparation and stakeholder communication?',
     section: 'External Relationships & Stakeholder Management',
@@ -248,7 +248,7 @@ export const operationalQuestions: Question[] = [
   },
   {
     id: 'board_quality',
-    title: 'Board & Investor Relations - Quality',
+    title: 'Board & Investor Relations: Quality',
     subtitle: 'How would you rate the quality and effectiveness of your stakeholder communication?',
     section: 'External Relationships & Stakeholder Management',
     type: 'binary',
@@ -269,7 +269,7 @@ export const operationalQuestions: Question[] = [
       { value: 2, label: 'Moderate time (10-20% of my week)' },
       { value: 3, label: 'Some time (5-10% of my week)' },
       { value: 4, label: 'Minimal time (2-5% of my week)' },
-      { value: 5, label: 'Very little time (<2% - well delegated)' },
+      { value: 5, label: 'Very little time (<2%: well delegated)' },
     ],
   },
   {
@@ -279,11 +279,11 @@ export const operationalQuestions: Question[] = [
     section: 'External Relationships & Stakeholder Management',
     type: 'scaled',
     options: [
-      { value: 1, label: "Daily - I'm always firefighting" },
+      { value: 1, label: "Daily: I'm always firefighting" },
       { value: 2, label: 'Several times per week' },
-      { value: 3, label: 'Weekly - some crises escalate to me' },
-      { value: 4, label: 'Monthly - only major issues escalate' },
-      { value: 5, label: 'Rarely - strong crisis management systems' },
+      { value: 3, label: 'Weekly: some crises escalate to me' },
+      { value: 4, label: 'Monthly: only major issues escalate' },
+      { value: 5, label: 'Rarely: strong crisis management systems' },
     ],
   },
 ];

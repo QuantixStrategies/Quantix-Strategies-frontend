@@ -82,7 +82,7 @@ export default function ProofSection() {
         <NarrativeChapter
           chapter="Chapter 02"
           title="Proof That Strategy Works"
-          subtitle="Twenty-five years of advisory work across geographies, client types, and asset classes — measured in outcomes, not promises."
+          subtitle="Twenty-five years of advisory work across geographies, client types, and asset classes, measured in outcomes, not promises."
           className="mb-16 md:mb-20"
         />
 

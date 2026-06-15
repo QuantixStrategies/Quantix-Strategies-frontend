@@ -20,7 +20,7 @@ const tracks = [
     icon: Layers,
     title: "Comprehensive Assessment",
     duration: "7 minutes",
-    description: "Full strategic and operational picture — recommended.",
+    description: "Full strategic and operational picture, recommended.",
     featured: true,
   },
 ];
@@ -41,7 +41,7 @@ export default function AssessmentPromoSection() {
         <NarrativeChapter
           chapter="Chapter 05"
           title="Your Next Move"
-          subtitle="In 10 minutes, get a clear picture of where your decision-making capacity is going — and a personalized roadmap within 48 hours. No pitch, no obligation."
+          subtitle="In 10 minutes, get a clear picture of where your decision-making capacity is going, and a personalized roadmap within 48 hours. No pitch, no obligation."
           className="mb-14 md:mb-16"
         />
 

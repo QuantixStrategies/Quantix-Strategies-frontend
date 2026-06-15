@@ -55,7 +55,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           >
-            Trusted extended team to global advisory firms and emerging businesses — delivering
+            Trusted extended team to global advisory firms and emerging businesses, delivering
             tailored strategies that turn complexity into clarity.
           </motion.p>
 

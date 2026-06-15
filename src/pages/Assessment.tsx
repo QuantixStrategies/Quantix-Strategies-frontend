@@ -42,7 +42,7 @@ export default function Assessment() {
   const [strategicResponses, setStrategicResponses] = useState<AssessmentResponses>({});
   const [whyExpanded, setWhyExpanded] = useState(false);
 
-  // Long assessment steps leave the user scrolled down — reset on every phase transition
+  // Long assessment steps leave the user scrolled down, reset on every phase transition
   useEffect(() => {
     scrollToTop();
   }, [phase, comprehensiveStep]);
@@ -190,7 +190,7 @@ export default function Assessment() {
           </p>
         </header>
 
-        {/* Why this assessment — on top, collapsed by default so cards stay visible */}
+        {/* Why this assessment, on top, collapsed by default so cards stay visible */}
         <section
           className="mx-auto max-w-[1100px] px-[max(32px,6vw)]"
           style={{ marginTop: '24px', marginBottom: '32px' }}
@@ -215,7 +215,7 @@ export default function Assessment() {
                       </div>
                       {!whyExpanded && (
                         <p className="mt-2 line-clamp-2 text-[13px] leading-[1.75] text-[var(--text-muted)]">
-                          Most Founders, CXOs, and MDs already sense something is off - decisions take
+                          Most Founders, CXOs, and MDs already sense something is off: decisions take
                           longer than they should, your calendar is full but the business isn&apos;t
                           moving, or you can feel a gap in your strategy without being able to name it.
                         </p>
@@ -235,7 +235,7 @@ export default function Assessment() {
                 <CollapsibleContent className="overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   <div className="space-y-5 border-t border-[rgba(184,150,46,0.12)] px-6 pb-7 pt-5 text-[13px] leading-[1.85] text-[var(--text-muted)] max-sm:px-5">
                     <p>
-                      Most Founders, CXOs, and MDs already sense something is off - decisions take
+                      Most Founders, CXOs, and MDs already sense something is off: decisions take
                       longer than they should, your calendar is full but the business isn&apos;t moving,
                       or you can feel a gap in your strategy without being able to name it. The hard
                       part isn&apos;t noticing the friction. It&apos;s knowing exactly where it&apos;s
@@ -251,7 +251,7 @@ export default function Assessment() {
                     </p>
                     <p>
                       In 10 minutes, you&apos;ll get a clear picture of where your time and
-                      decision-making capacity are actually going, and within 48 - 72 hours a
+                      decision-making capacity are actually going, and within 48 to 72 hours a
                       personalized roadmap for each gap: what you can fix yourself today, what role
                       you&apos;re missing, and where structural support would move the needle. No
                       pitch, no obligation. Just a clearer view of what&apos;s actually slowing you
@@ -282,7 +282,7 @@ export default function Assessment() {
                         </p>
                         <p className="mb-3">
                           Built on proven consulting frameworks combining strategic planning,
-                          operational excellence, behavioral psychology, and statistical analysis -
+                          operational excellence, behavioral psychology, and statistical analysis.
                         </p>
                         <ul className="list-disc space-y-1.5 pl-4">
                           <li>Strategy: Organizational design and strategic planning frameworks</li>
@@ -304,7 +304,7 @@ export default function Assessment() {
           className="mx-auto grid max-w-[1100px] grid-cols-1 gap-6 px-[max(32px,6vw)] max-[899px]:grid-cols-1 min-[900px]:grid-cols-3"
           style={{ marginBottom: '48px' }}
         >
-          {/* Card 1  -  Strategic Focus Audit */}
+          {/* Card 1, Strategic Focus Audit */}
           <article className="group relative flex flex-col overflow-hidden rounded-xl border border-[rgba(56,111,164,0.15)] bg-[var(--bg-secondary)] px-8 py-9 transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(56,111,164,0.35)] hover:shadow-[0_16px_48px_rgba(56,111,164,0.15)]">
             <div className="absolute left-0 right-0 top-0 h-[3px] bg-[#386FA4]" />
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-[10px] border border-[rgba(56,111,164,0.25)] bg-[rgba(56,111,164,0.1)] text-[#386FA4]">
@@ -337,7 +337,7 @@ export default function Assessment() {
             </button>
           </article>
 
-          {/* Card 2  -  Operational Excellence */}
+          {/* Card 2, Operational Excellence */}
           <article className="group relative flex flex-col overflow-hidden rounded-xl border border-[rgba(56,111,164,0.15)] bg-[var(--bg-secondary)] px-8 py-9 transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(56,111,164,0.35)] hover:shadow-[0_16px_48px_rgba(56,111,164,0.15)]">
             <div className="absolute left-0 right-0 top-0 h-[3px] bg-[#954F72]" />
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-[10px] border border-[rgba(149,79,114,0.25)] bg-[rgba(149,79,114,0.1)] text-[#954F72]">
@@ -348,7 +348,7 @@ export default function Assessment() {
             </h2>
             <div className="mb-3.5 h-0.5 w-8 bg-[#B8962E]" />
             <p className="mb-6 flex-1 text-[13px] leading-[1.7] text-[var(--text-muted)]">
-              Systems, structure & execution - Evaluate role clarity, communication, stakeholder
+              Systems, structure & execution. Evaluate role clarity, communication, stakeholder
               management
             </p>
             <div className="mb-7 flex flex-wrap gap-2">
@@ -370,7 +370,7 @@ export default function Assessment() {
             </button>
           </article>
 
-          {/* Card 3  -  Comprehensive */}
+          {/* Card 3, Comprehensive */}
           <article className="group relative flex flex-col overflow-hidden rounded-xl border border-[rgba(56,111,164,0.15)] bg-[var(--bg-secondary)] px-8 py-9 transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(56,111,164,0.35)] hover:shadow-[0_16px_48px_rgba(56,111,164,0.15)]">
             <div className="absolute left-0 right-0 top-0 h-[3px] bg-gradient-to-r from-[#386FA4] to-[#954F72]" />
             <span

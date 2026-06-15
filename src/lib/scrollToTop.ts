@@ -1,7 +1,7 @@
-/** Fixed nav height — matches Navigation `h-16 lg:h-20` */
+/** Fixed nav height, matches Navigation `h-16 lg:h-20` */
 export const NAV_SCROLL_OFFSET = 80;
 
-/** Reset window scroll — use on route changes without a hash target */
+/** Reset window scroll, use on route changes without a hash target */
 export function scrollToTop(): void {
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 }

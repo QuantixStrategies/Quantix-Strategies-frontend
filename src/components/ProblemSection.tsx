@@ -8,7 +8,7 @@ const painPoints = [
     icon: Clock,
     title: "Decisions take longer than they should",
     description:
-      "Every major call runs through one person. When they're unavailable, the organization stalls — no matter how capable the team is.",
+      "Every major call runs through one person. When they're unavailable, the organization stalls, no matter how capable the team is.",
   },
   {
     icon: Calendar,
@@ -20,7 +20,7 @@ const painPoints = [
     icon: HelpCircle,
     title: "You sense a gap you can't name",
     description:
-      "Something feels off in your strategy or operations — but without a clear diagnosis, you can't fix what you can't see.",
+      "Something feels off in your strategy or operations, but without a clear diagnosis, you can't fix what you can't see.",
   },
 ];
 
@@ -57,7 +57,7 @@ export default function ProblemSection() {
         <NarrativeChapter
           chapter="Chapter 01"
           title="The Challenge Leaders Face"
-          subtitle="Most Founders, CXOs, and MDs already sense something is off. The friction isn't the problem — not knowing where it's coming from is."
+          subtitle="Most Founders, CXOs, and MDs already sense something is off. The friction isn't the problem, not knowing where it's coming from is."
           className="mb-16 md:mb-20"
         />
 
@@ -91,7 +91,7 @@ export default function ProblemSection() {
 
         <p className="mx-auto mt-14 max-w-2xl text-center font-playfair text-lg italic leading-relaxed text-[#A8B2BD]">
           &ldquo;The hard part isn&apos;t noticing the friction. It&apos;s knowing exactly where
-          it&apos;s coming from — and what actually fixes it.&rdquo;
+          it&apos;s coming from, and what actually fixes it.&rdquo;
         </p>
       </div>
     </section>

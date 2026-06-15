@@ -5,7 +5,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  # Public site config (also in Footer / .env.example) — not actual secrets.
+  # Public site config (also in Footer / .env.example), not actual secrets.
   SECRETS_SCAN_OMIT_KEYS = "ASSESSMENT_FROM_EMAIL,ASSESSMENT_NOTIFY_EMAIL,QUANTIX_LINKEDIN_URL,QUANTIX_WEBSITE_URL"
 
 [functions]

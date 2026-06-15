@@ -14,7 +14,7 @@ const envPath = resolve(root, '.env');
 
 function loadEnvFile(path: string) {
   if (!existsSync(path)) {
-    throw new Error(`Missing ${path} — create it from .env.example`);
+    throw new Error(`Missing ${path}, create it from .env.example`);
   }
   const content = readFileSync(path, 'utf8');
   for (const line of content.split('\n')) {

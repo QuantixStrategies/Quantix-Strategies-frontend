@@ -37,7 +37,7 @@ export type ResponseDetail = {
 };
 
 export type AssessmentSubmissionPayload = {
-  /** Honeypot — must be empty; bots are silently accepted without email */
+  /** Honeypot, must be empty; bots are silently accepted without email */
   website?: string;
   lead: Omit<LeadCaptureFormData, 'website'>;
   assessment: {

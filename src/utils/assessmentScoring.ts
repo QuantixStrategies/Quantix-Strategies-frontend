@@ -315,7 +315,7 @@ function generateValuePropositions(
     }
     if ((responses.planning_consistency ?? 0) <= 2) {
       strategic.push('Architect comprehensive 12-18 month strategic roadmap');
-      strategic.push("Define founder's 'North Star Mandate' - what only you should do");
+      strategic.push("Define founder's 'North Star Mandate', what only you should do");
     }
     if (responses.vision_docs === 0) {
       strategic.push('Develop strategic frameworks and vision documentation');
@@ -323,7 +323,7 @@ function generateValuePropositions(
     }
     if ((responses.scalability ?? 0) <= 2) {
       strategic.push('Design scaling infrastructure and interim CXO functions');
-      strategic.push('Lead zero-based strategy reset - identify what to pause/kill');
+      strategic.push('Lead zero-based strategy reset, identify what to pause/kill');
     }
     if ((responses.sustainability ?? 0) <= 2) {
       strategic.push('Build sustainable leadership model and recovery roadmap');

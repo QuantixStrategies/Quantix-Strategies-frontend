@@ -9,7 +9,7 @@ const ethosPoints = [
     heading: "Quality",
     headingHighlight: "Q",
     description:
-      "Quality that's consistent and uncompromising  -  the foundation of every engagement.",
+      "Quality that's consistent and uncompromising, the foundation of every engagement.",
     microText: null as string | null,
   },
   {
@@ -43,7 +43,7 @@ const ethosPoints = [
     heading: "eXcellence",
     headingHighlight: "X",
     description:
-      "Excellence at the intersection of vision and execution  -  where strategy meets delivery.",
+      "Excellence at the intersection of vision and execution, where strategy meets delivery.",
     microText: "Where strategy meets flawless delivery.",
   },
 ] as const;

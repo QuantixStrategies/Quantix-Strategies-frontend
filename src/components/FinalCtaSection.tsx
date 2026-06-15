@@ -15,7 +15,7 @@ export default function FinalCtaSection() {
           Turn data into decision
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-[#A8B2BD]">
-          Whether you need a diagnostic starting point or a strategic partner for the long haul —
+          Whether you need a diagnostic starting point or a strategic partner for the long haul,
           Quantix is built to be the extended team you can trust.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">

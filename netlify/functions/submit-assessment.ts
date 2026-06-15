@@ -304,14 +304,14 @@ async function sendAssessmentEmails(payload: SubmissionPayload): Promise<void> {
 
   if (!apiKey) {
     console.warn(
-      'RESEND_API_KEY is not configured — submission accepted but emails skipped'
+      'RESEND_API_KEY is not configured, submission accepted but emails skipped'
     );
     return;
   }
 
   const resend = new Resend(apiKey);
   const trackLabel = TRACK_LABELS[payload.assessment.track] ?? payload.assessment.track;
-  const teamSubject = `New Assessment Lead — ${payload.lead.businessName} (${trackLabel}) — Score ${payload.assessment.result.score}`;
+  const teamSubject = `New Assessment Lead, ${payload.lead.businessName} (${trackLabel}), Score ${payload.assessment.result.score}`;
 
   const teamResult = await resend.emails.send({
     from: fromEmail,
