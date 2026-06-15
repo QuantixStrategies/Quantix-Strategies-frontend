@@ -11,6 +11,20 @@ const HeroSection = () => {
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
       <HeroNoiseSignalCanvas />
 
+      <div className="pointer-events-none absolute right-[4%] top-[28%] z-[1] hidden lg:block">
+        <div className="relative">
+          <div className="absolute -inset-6 rounded-full bg-[#B8962E]/10 blur-2xl" />
+          <div className="relative rounded-full border border-[#B8962E]/30 bg-[#0D1B2A]/60 px-5 py-4 backdrop-blur-sm">
+            <p className="text-center text-[9px] font-medium uppercase tracking-[0.35em] text-[#B8962E]">
+              The Lens
+            </p>
+            <p className="mt-1 text-center font-playfair text-sm italic text-[#F0EDE8]/80">
+              Data → Decision
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="container relative z-[1] mx-auto px-4 py-32 lg:px-8 lg:py-40">
         <div className="max-w-4xl">
           <motion.p
